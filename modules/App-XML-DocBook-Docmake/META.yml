@@ -1,0 +1,19 @@
+---
+name: App-XML-DocBook-Builder
+version: 0.01
+author:
+  - 'Shlomi Fish <shlomif@cpan.org>'
+abstract: Build DocBook/XML files.
+license: bsd
+resources:
+  license: http://www.opensource.org/licenses/bsd-license.php
+build_requires:
+  Test::More: 0
+provides:
+  App::XML::DocBook::Builder:
+    file: lib/App/XML/DocBook/Builder.pm
+    version: 0.01
+generated_by: Module::Build version 0.2805
+meta-spec:
+  url: http://module-build.sourceforge.net/META-spec-v1.2.html
+  version: 1.2

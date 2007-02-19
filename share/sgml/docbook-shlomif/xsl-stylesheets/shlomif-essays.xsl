@@ -19,18 +19,6 @@
     -->
     <xsl:param name="fop1.extensions">1</xsl:param>
 
-
-<xsl:template match="itemizedlist">
-    <xsl:choose>
-    <xsl:when test="docmake.output.format = 'xhtml'">
-        <xsl:call-template name="html_itemized_list" />
-    </xsl:when>
-    <xsl:otherwise>
-        <xsl:apply-imports />
-    </xsl:otherwise>
-    </xsl:choose>
-</xsl:template>
-
 <xsl:template name="html_itemized_list">
     <div xmlns="http://www.w3.org/1999/xhtml" class="{name(.)}">
     <xsl:call-template name="anchor"/>

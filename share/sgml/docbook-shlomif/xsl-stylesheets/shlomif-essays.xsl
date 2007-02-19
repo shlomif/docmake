@@ -1,4 +1,5 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns="http://www.w3.org/1999/xhtml" version='1.0'>
+    <xsl:param name="use.id.as.filename">1</xsl:param>
     <xsl:param name="html.stylesheet">style.css</xsl:param>
     <xsl:param name="itemizedlist.propagates.style">1</xsl:param>
     <xsl:param name="chunker.output.doctype-public">-//W3C//DTD XHTML 1.0 Transitional//EN</xsl:param>
@@ -17,14 +18,28 @@
     http://www.mail-archive.com/fop-users%40xmlgraphics.apache.org/msg06170.html
     -->
     <xsl:param name="fop1.extensions">1</xsl:param>
+
+
 <xsl:template match="itemizedlist">
+    <xsl:choose>
+    <xsl:when test="docmake.output.format = 'xhtml'">
+        <xsl:call-template name="html_itemized_list" />
+    </xsl:when>
+    <xsl:otherwise>
+        <xsl:apply-imports />
+    </xsl:otherwise>
+    </xsl:choose>
+</xsl:template>
+
+<xsl:template name="html_itemized_list">
     <div xmlns="http://www.w3.org/1999/xhtml" class="{name(.)}">
     <xsl:call-template name="anchor"/>
     <xsl:if test="title">
       <xsl:call-template name="formal.object.heading"/>
     </xsl:if>
 
-    <xsl:apply-templates select="*[not(self::listitem                                    or self::title                                    or self::titleabbrev)]"/>
+    <xsl:apply-templates select="*[not(self::listitem or self::title 
+        or self::titleabbrev)]"/>
 
     <ul>
          <xsl:if test="@role">
@@ -52,7 +67,7 @@
 
 <!-- Insert some AdSense Ads -->
 <xsl:template name="user.header.navigation">
-    <div class="center">
+    <div class="center ads_top">
     <script type="text/javascript">
 google_ad_client = "pub-2480595666283917";
 google_ad_width = 468;
@@ -71,4 +86,6 @@ google_color_url = "008000";
 </script>
     </div>
 </xsl:template>
+
+
 </xsl:stylesheet>

@@ -45,7 +45,7 @@ HTML_DSSSL_TARGET = $(DOC)-dsssl
 # Declare the default HTML XSL all-in-one-chunck target directory.
 # If over-rided by the user - it would be left as is.
 
-HTML_ONECHUNCK_TARGET ?= $(DOC)-onechunk
+HTML_ONECHUNK_TARGET ?= $(DOC)-onechunk
 
 
 # A file inside the XSL target directory for dependency resolution
@@ -60,7 +60,7 @@ HTML_XSL_CSS_SOURCE ?= style.css
 
 # A file inside the XSL target directory for dependency resolution
 
-HTML_ONE_CHUNCK_TARGET_FILE = $(HTML_ONECHUNCK_TARGET)/index.html
+HTML_ONE_CHUNK_TARGET_FILE = $(HTML_ONECHUNK_TARGET)/index.html
 
 
 # Define common Commands
@@ -79,7 +79,7 @@ MAKEFILE_SOURCE ?= Makefile
 
 # A temporary location for uploading the all-in-one-documents for peer-review.
 
-UPLOAD_ONECHUNCK_PATH = $${HOMEPAGE_SSH_PATH}
+UPLOAD_ONECHUNK_PATH = $${HOMEPAGE_SSH_PATH}
 
 ##################################################
 
@@ -124,7 +124,7 @@ pdf: $(PDF_DOC)
 
 rtf: $(RTF_DOC)
 
-all_in_one_html: $(HTML_ONECHUNK_TARGET_FILE)
+all_in_one_html: $(HTML_ONE_CHUNK_TARGET_FILE)
 
 
 
@@ -141,7 +141,7 @@ $(HTML_OTHER_SOURCES_DEST) :: $(HTML_XSL_TARGET)/%: %
 $(HTML_DSSSL_TARGET): $(DSSSL_SOURCES)
 	db2html $(DB2_HTML_FLAGS) $(MAIN_SOURCE)
 
-$(HTML_ONE_CHUNCK_TARGET_FILE): $(XSL_SOURCES)
+$(HTML_ONE_CHUNK_TARGET_FILE): $(XSL_SOURCES)
 	$(XMLTO) --stringparam "docmake.output.format=xhtml" -m /usr/share/sgml/docbook/xsl-stylesheets/xhtml/onechunk.xsl -o $(HTML_XSL_TARGET)-onechunk xhtml $<
 
 
@@ -171,7 +171,7 @@ upload: $(UPLOAD_DEPS)
 	$(RSYNC) -r $(FILES_TO_UPLOAD) $(UPLOAD_PATH)
 
 upload_all_in_one: all_in_one_html
-	$(RSYNC) -r $(HTML_ONECHUNK_TARGET) $(UPLOAD_ONECHUNCK_PATH)
+	$(RSYNC) -r $(HTML_ONECHUNK_TARGET) $(UPLOAD_ONECHUNK_PATH)
 
 %.show:
 	@echo "$* = $($*)"

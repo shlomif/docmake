@@ -24,6 +24,8 @@ XHTML_XSLT_SS = $(DOCMAKE_XSLT_PATH)/shlomif-essays-xhtml.xsl
 
 FO_XSLT_SS = $(DOCMAKE_XSLT_PATH)/shlomif-essays-fo.xsl
 
+XHTML_ONE_CHUNK_XSLT_SS = $(DOCMAKE_XSLT_PATH)/shlomif-essays-xhtml-onechunk.xsl
+
 # Declare the PDF and RTF documents.
 
 PDF_DOC = $(DOC).pdf
@@ -142,7 +144,7 @@ $(HTML_DSSSL_TARGET): $(DSSSL_SOURCES)
 	db2html $(DB2_HTML_FLAGS) $(MAIN_SOURCE)
 
 $(HTML_ONE_CHUNK_TARGET_FILE): $(XSL_SOURCES)
-	$(XMLTO) --stringparam "docmake.output.format=xhtml" -m /usr/share/sgml/docbook/xsl-stylesheets/xhtml/onechunk.xsl -o $(HTML_XSL_TARGET)-onechunk xhtml $<
+	$(XMLTO) --stringparam "docmake.output.format=xhtml" -m $(XHTML_ONE_CHUNK_XSLT_SS) -o $(HTML_XSL_TARGET)-onechunk xhtml $<
 
 
 # PDF and RTF.

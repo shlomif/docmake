@@ -154,9 +154,8 @@ $(FO_DOC): $(XSL_SOURCES)
 $(PDF_DOC): $(FO_DOC)
 	fop -fo $< -pdf $@
 
-$(RTF_DOC): $(DSSSL_SOURCES)
-	db2rtf $(DB2_PRINT_FLAGS) $(MAIN_SOURCE)
-
+$(RTF_DOC): $(FO_DOC)
+	fop -fo $< -rtf $@
 
 # Source archive.
 

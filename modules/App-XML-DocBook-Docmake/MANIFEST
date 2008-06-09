@@ -1,10 +1,11 @@
 bin/docmake
 Build.PL
 Changes
+lib/App/XML/DocBook/Builder.pm
+lib/App/XML/DocBook/Docmake.pm
 MANIFEST
 META.yml # Will be created by "make dist"
 README
-lib/App/XML/DocBook/Builder.pm
 t/00-load.t
 t/boilerplate.t
 t/pod-coverage.t

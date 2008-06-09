@@ -1,32 +1,11 @@
 #!/usr/bin/perl
 
-use lib "$ENV{HOME}/apps/docbook-builder/lib/perl5/site_perl/5.8.8/";
-
 use strict;
 use warnings;
 
-use Getopt::Long;
+use App::XML::DocBook::Docmake;
 
-use App::XML::DocBook::Builder;
+my $docmake = App::XML::DocBook::Docmake->new();
 
-my $app = App::XML::DocBook::Builder->new();
-
-my $command = shift(@ARGV);
-
-if ($command eq "setup")
-{
-    my $base;
-    GetOptions(
-        'base=s' => \$base,
-    );
-    if (!defined ($base))
-    {
-        die "Usage: docmake setup --base=\$my_doc_base";
-    }
-    $app->initialize_makefiles({doc_base => $base});
-}
-else
-{
-    die "Unknown command!";
-}
+exit($docmake->run({argv => [@ARGV]}));
 

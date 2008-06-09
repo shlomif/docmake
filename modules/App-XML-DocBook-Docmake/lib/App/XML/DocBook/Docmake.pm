@@ -18,6 +18,7 @@ __PACKAGE__->mk_accessors(qw(
     _input_path
     _mode
     _output_path
+    _stylesheet
     _verbose
 ));
 
@@ -57,14 +58,17 @@ sub _init
 
     my $output_path;
     my $verbose = 0;
+    my $stylesheet;
 
     my $ret = GetOptionsFromArray($argv,
         "o=s" => \$output_path,
         "v|verbose" => \$verbose,
+        "x|stylesheet=s" => \$stylesheet,
     );
 
     $self->_output_path($output_path);
     $self->_verbose($verbose);
+    $self->_stylesheet($stylesheet);
 
     my $mode = shift(@$argv);
 
@@ -110,11 +114,18 @@ sub run
 {
     my $self = shift;
 
+    my @stylesheet_params = ("http://docbook.sourceforge.net/release/xsl/current/xhtml/docbook.xsl");
+
+    if (defined($self->_stylesheet()))
+    {
+        @stylesheet_params = ($self->_stylesheet());
+    }
+
     return $self->_exec_command(
         [
             "xsltproc",
             "-o", $self->_output_path(),
-            "http://docbook.sourceforge.net/release/xsl/current/xhtml/docbook.xsl",
+            @stylesheet_params,
             $self->_input_path(),
         ],
     );

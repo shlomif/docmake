@@ -5,7 +5,7 @@ use warnings;
 
 use App::XML::DocBook::Docmake;
 
-my $docmake = App::XML::DocBook::Docmake->new();
+my $docmake = App::XML::DocBook::Docmake->new({argv => [@ARGV]});
 
-exit($docmake->run({argv => [@ARGV]}));
+exit($docmake->run());
 

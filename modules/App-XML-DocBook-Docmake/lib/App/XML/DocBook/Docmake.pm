@@ -18,6 +18,7 @@ __PACKAGE__->mk_accessors(qw(
     _input_path
     _mode
     _output_path
+    _verbose
 ));
 
 =head1 SYNOPSIS
@@ -55,16 +56,19 @@ sub _init
     my $argv = $args->{'argv'};
 
     my $output_path;
+    my $verbose = 0;
 
     my $ret = GetOptionsFromArray($argv,
         "o=s" => \$output_path,
+        "v|verbose" => \$verbose,
     );
 
     $self->_output_path($output_path);
+    $self->_verbose($verbose);
 
     my $mode = shift(@$argv);
 
-    if ($mode eq "html")
+    if ($mode eq "xhtml")
     {
         $self->_mode($mode);
     }
@@ -95,11 +99,18 @@ sub run
 {
     my $self = shift;
 
-    return system("xsltproc",
+    my @cmd = ("xsltproc",
         "-o", $self->_output_path(),
-        "docbook-xsl/html/docbook.xsl",
+        "http://docbook.sourceforge.net/release/xsl/current/xhtml/docbook.xsl",
         $self->_input_path(),
-    );  
+    );
+
+    if ($self->_verbose())
+    {
+        print (join(" ", @cmd), "\n");
+    }
+
+    return system(@cmd);
 }
 
 

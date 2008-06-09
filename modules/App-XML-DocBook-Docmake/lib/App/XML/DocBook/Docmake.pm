@@ -95,22 +95,29 @@ Runs the object.
 
 =cut
 
+sub _exec_command
+{
+    my ($self, $cmd) = @_;
+
+    if ($self->_verbose())
+    {
+        print (join(" ", @$cmd), "\n");
+    }
+    return system(@$cmd);
+}
+
 sub run
 {
     my $self = shift;
 
-    my @cmd = ("xsltproc",
-        "-o", $self->_output_path(),
-        "http://docbook.sourceforge.net/release/xsl/current/xhtml/docbook.xsl",
-        $self->_input_path(),
+    return $self->_exec_command(
+        [
+            "xsltproc",
+            "-o", $self->_output_path(),
+            "http://docbook.sourceforge.net/release/xsl/current/xhtml/docbook.xsl",
+            $self->_input_path(),
+        ],
     );
-
-    if ($self->_verbose())
-    {
-        print (join(" ", @cmd), "\n");
-    }
-
-    return system(@cmd);
 }
 
 

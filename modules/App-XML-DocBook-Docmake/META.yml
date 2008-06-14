@@ -7,13 +7,18 @@ abstract: Build DocBook/XML files.
 license: bsd
 resources:
   license: http://www.opensource.org/licenses/bsd-license.php
+requires:
+  Getopt::Long: 2.37
 build_requires:
   Test::More: 0
+  Test::Trap: 0
 provides:
   App::XML::DocBook::Builder:
     file: lib/App/XML/DocBook/Builder.pm
     version: 0.01
-generated_by: Module::Build version 0.2805
+  App::XML::DocBook::Docmake:
+    file: lib/App/XML/DocBook/Docmake.pm
+generated_by: Module::Build version 0.2801
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.2.html
   version: 1.2

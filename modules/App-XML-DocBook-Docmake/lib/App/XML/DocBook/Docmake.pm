@@ -38,6 +38,17 @@ Instantiates a new object.
 
 =cut
 
+my %modes = 
+(
+    'help' =>
+    {
+        standalone => 1,
+    },
+    'xhtml' =>
+    {
+    },
+);
+
 sub new
 {
     my $class = shift;
@@ -72,7 +83,9 @@ sub _init
 
     my $mode = shift(@$argv);
 
-    if ($mode eq "xhtml")
+    my $mode_struct = $modes{$mode};
+
+    if ($mode_struct)
     {
         $self->_mode($mode);
     }
@@ -83,12 +96,14 @@ sub _init
 
     my $input_path = shift(@$argv);
 
-    if (!defined($input_path))
+    if (! (defined($input_path) || $mode_struct->{standalone}) )
     {
         die "Input path not specified on command line";
     }
-
-    $self->_input_path($input_path);
+    else
+    {
+        $self->_input_path($input_path);
+    }
 
     return;
 }
@@ -114,6 +129,30 @@ sub run
 {
     my $self = shift;
 
+    my $mode = $self->_mode();
+
+    my $mode_func = "_run_mode_$mode";
+
+    return $self->$mode_func(@_);
+}
+
+sub _run_mode_help
+{
+    my $self = shift;
+
+    print <<"EOF";
+Docmake version $VERSION
+A tool to convert DocBook/XML to other formats
+
+Available commands:
+
+    help - this help screen.
+    xhtml - convert to xhtml.
+EOF
+}
+
+sub _run_mode_xhtml
+{
     my @stylesheet_params = ("http://docbook.sourceforge.net/release/xsl/current/xhtml/docbook.xsl");
 
     if (defined($self->_stylesheet()))

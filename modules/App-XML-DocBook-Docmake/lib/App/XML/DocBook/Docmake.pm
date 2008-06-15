@@ -51,6 +51,10 @@ my %modes =
     'xhtml' =>
     {
     },
+    'rtf' =>
+    {
+        xslt_mode => "fo",
+    },
     'pdf' =>
     {
         xslt_mode => "fo",
@@ -165,6 +169,7 @@ Available commands:
     help - this help screen.
     
     fo - convert to XSL-FO.
+    rtf - convert to RTF (MS Word).
     pdf - convert to PDF (Adobe Acrobat).
     xhtml - convert to XHTML.
 EOF
@@ -241,6 +246,25 @@ sub _run_mode_pdf
         [
             "fop",
             "-pdf", $self->_output_path(),
+            $xslt_output_path,
+        ],
+    );
+}
+
+sub _run_mode_rtf
+{
+    my $self = shift;
+
+    my $xslt_output_path = $self->_output_path();
+
+    $xslt_output_path =~ s{\.([^\.]*)\z}{\.fo}ms;
+
+    $self->_run_xslt({output_path => $xslt_output_path});
+
+    return $self->_exec_command(
+        [
+            "fop",
+            "-rtf", $self->_output_path(),
             $xslt_output_path,
         ],
     );

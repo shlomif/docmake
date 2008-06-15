@@ -40,6 +40,9 @@ Instantiates a new object.
 
 my %modes = 
 (
+    'fo' =>
+    {
+    },
     'help' =>
     {
         standalone => 1,
@@ -147,17 +150,50 @@ A tool to convert DocBook/XML to other formats
 Available commands:
 
     help - this help screen.
+    
+    fo - convert to fo
     xhtml - convert to xhtml.
 EOF
 }
 
+sub _run_mode_fo
+{
+    my $self = shift;
+    return $self->_run_xslt(@_);
+}
+
 sub _run_mode_xhtml
 {
-    my @stylesheet_params = ("http://docbook.sourceforge.net/release/xsl/current/xhtml/docbook.xsl");
+    my $self = shift;
+
+    return $self->_run_xslt(@_);
+}
+
+sub _calc_default_xslt_stylesheet
+{
+    my $self = shift;
+
+    my $mode = $self->_mode();
+
+    return 
+        "http://docbook.sourceforge.net/release/xsl/current/${mode}/docbook.xsl"
+        ;
+}
+
+sub _run_xslt
+{
+    my $self = shift;
+
+    my @stylesheet_params = ($self->_calc_default_xslt_stylesheet());
 
     if (defined($self->_stylesheet()))
     {
         @stylesheet_params = ($self->_stylesheet());
+    }
+
+    if (!defined($self->_output_path()))
+    {
+        die "Output path not specified!";
     }
 
     return $self->_exec_command(

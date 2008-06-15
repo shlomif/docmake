@@ -151,8 +151,8 @@ Available commands:
 
     help - this help screen.
     
-    fo - convert to fo
-    xhtml - convert to xhtml.
+    fo - convert to XSL-FO.
+    xhtml - convert to XHTML.
 EOF
 }
 

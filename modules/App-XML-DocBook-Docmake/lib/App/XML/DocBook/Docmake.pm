@@ -232,9 +232,10 @@ sub _run_xslt
     );
 }
 
-sub _run_mode_pdf
+sub _run_xslt_and_from_fo
 {
     my $self = shift;
+    my $args = shift;
 
     my $xslt_output_path = $self->_output_path();
 
@@ -245,9 +246,20 @@ sub _run_mode_pdf
     return $self->_exec_command(
         [
             "fop",
-            "-pdf", $self->_output_path(),
+            ("-".$args->{fo_out_format}), $self->_output_path(),
             $xslt_output_path,
         ],
+    );
+}
+
+sub _run_mode_pdf
+{
+    my $self = shift;
+
+    return $self->_run_xslt_and_from_fo(
+        {
+            fo_out_format => "pdf",
+        },
     );
 }
 
@@ -255,18 +267,10 @@ sub _run_mode_rtf
 {
     my $self = shift;
 
-    my $xslt_output_path = $self->_output_path();
-
-    $xslt_output_path =~ s{\.([^\.]*)\z}{\.fo}ms;
-
-    $self->_run_xslt({output_path => $xslt_output_path});
-
-    return $self->_exec_command(
-        [
-            "fop",
-            "-rtf", $self->_output_path(),
-            $xslt_output_path,
-        ],
+    return $self->_run_xslt_and_from_fo(
+        {
+            fo_out_format => "rtf",
+        },
     );
 }
 

@@ -20,6 +20,7 @@ __PACKAGE__->mk_accessors(qw(
     _output_path
     _stylesheet
     _verbose
+    _xslt_mode
 ));
 
 =head1 SYNOPSIS
@@ -49,6 +50,10 @@ my %modes =
     },
     'xhtml' =>
     {
+    },
+    'pdf' =>
+    {
+        xslt_mode => "fo",
     },
 );
 
@@ -91,6 +96,14 @@ sub _init
     if ($mode_struct)
     {
         $self->_mode($mode);
+        if ($mode_struct->{xslt_mode})
+        {
+            $self->_xslt_mode($mode_struct->{xslt_mode});
+        }
+        else
+        {
+            $self->_xslt_mode($self->_mode());
+        }
     }
     else
     {
@@ -152,6 +165,7 @@ Available commands:
     help - this help screen.
     
     fo - convert to XSL-FO.
+    pdf - convert to PDF (Adobe Acrobat).
     xhtml - convert to XHTML.
 EOF
 }
@@ -159,21 +173,21 @@ EOF
 sub _run_mode_fo
 {
     my $self = shift;
-    return $self->_run_xslt(@_);
+    return $self->_run_xslt();
 }
 
 sub _run_mode_xhtml
 {
     my $self = shift;
 
-    return $self->_run_xslt(@_);
+    return $self->_run_xslt();
 }
 
 sub _calc_default_xslt_stylesheet
 {
     my $self = shift;
 
-    my $mode = $self->_mode();
+    my $mode = $self->_xslt_mode();
 
     return 
         "http://docbook.sourceforge.net/release/xsl/current/${mode}/docbook.xsl"
@@ -183,6 +197,7 @@ sub _calc_default_xslt_stylesheet
 sub _run_xslt
 {
     my $self = shift;
+    my $args = shift;
 
     my @stylesheet_params = ($self->_calc_default_xslt_stylesheet());
 
@@ -190,8 +205,14 @@ sub _run_xslt
     {
         @stylesheet_params = ($self->_stylesheet());
     }
+    
+    my $output_path = $self->_output_path();
+    if (defined($args->{output_path}))
+    {
+        $output_path = $args->{output_path};
+    }
 
-    if (!defined($self->_output_path()))
+    if (!defined($output_path))
     {
         die "Output path not specified!";
     }
@@ -199,13 +220,31 @@ sub _run_xslt
     return $self->_exec_command(
         [
             "xsltproc",
-            "-o", $self->_output_path(),
+            "-o", $output_path,
             @stylesheet_params,
             $self->_input_path(),
         ],
     );
 }
 
+sub _run_mode_pdf
+{
+    my $self = shift;
+
+    my $xslt_output_path = $self->_output_path();
+
+    $xslt_output_path =~ s{\.([^\.]*)\z}{\.fo}ms;
+
+    $self->_run_xslt({output_path => $xslt_output_path});
+
+    return $self->_exec_command(
+        [
+            "fop",
+            "-pdf", $self->_output_path(),
+            $xslt_output_path,
+        ],
+    );
+}
 
 =head1 AUTHOR
 

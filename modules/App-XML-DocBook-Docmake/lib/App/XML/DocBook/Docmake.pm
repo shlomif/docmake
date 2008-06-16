@@ -1,5 +1,8 @@
 package App::XML::DocBook::Docmake;
 
+use strict;
+use warnings;
+
 use Getopt::Long qw(GetOptionsFromArray);
 
 use base 'Class::Accessor';
@@ -14,6 +17,10 @@ Version 0.01
 
 =cut
 
+use vars qw($VERSION);
+
+$VERSION = "0.01";
+
 __PACKAGE__->mk_accessors(qw(
     _input_path
     _mode
@@ -21,6 +28,7 @@ __PACKAGE__->mk_accessors(qw(
     _stylesheet
     _verbose
     _xslt_mode
+    _xslt_stringparams
 ));
 
 =head1 SYNOPSIS
@@ -82,16 +90,32 @@ sub _init
     my $output_path;
     my $verbose = 0;
     my $stylesheet;
+    my @in_stringparams;
 
     my $ret = GetOptionsFromArray($argv,
         "o=s" => \$output_path,
         "v|verbose" => \$verbose,
         "x|stylesheet=s" => \$stylesheet,
+        "stringparam=s" => \@in_stringparams,
     );
+
+    my @stringparams;
+    foreach my $param (@in_stringparams)
+    {
+        if ($param =~ m{\A([^=]+)=(.+)\z}ms)
+        {
+            push @stringparams, [$1,$2];
+        }
+        else
+        {
+            die "Wrong stringparam argument '$param'! Does not contain a '='!";
+        }
+    }
 
     $self->_output_path($output_path);
     $self->_verbose($verbose);
     $self->_stylesheet($stylesheet);
+    $self->_xslt_stringparams(\@stringparams);
 
     my $mode = shift(@$argv);
 
@@ -226,6 +250,7 @@ sub _run_xslt
         [
             "xsltproc",
             "-o", $output_path,
+            (map { ("--stringparam", @$_ ) } @{$self->_xslt_stringparams()}),
             @stylesheet_params,
             $self->_input_path(),
         ],

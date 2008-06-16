@@ -18,7 +18,8 @@ provides:
     version: 0.01
   App::XML::DocBook::Docmake:
     file: lib/App/XML/DocBook/Docmake.pm
-generated_by: Module::Build version 0.2801
+    version: 0.01
+generated_by: Module::Build version 0.2808
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.2.html
   version: 1.2

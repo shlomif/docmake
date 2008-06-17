@@ -1,8 +1,12 @@
 use strict;
 use warnings;
-use Module::Build;
 
-my $builder = Module::Build->new(
+use File::Spec;
+use lib File::Spec->catdir(File::Spec->curdir(), "inc");
+
+use Test::Run::Builder;
+
+my $builder = Test::Run::Builder->new(
     module_name         => 'App::XML::DocBook::Builder',
     license             => 'bsd',
     dist_author         => 'Shlomi Fish <shlomif@cpan.org>',

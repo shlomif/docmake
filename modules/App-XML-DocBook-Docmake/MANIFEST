@@ -1,6 +1,7 @@
 bin/docmake
 Build.PL
 Changes
+inc/Test/Run/Builder.pm
 lib/App/XML/DocBook/Builder.pm
 lib/App/XML/DocBook/Docmake.pm
 MANIFEST

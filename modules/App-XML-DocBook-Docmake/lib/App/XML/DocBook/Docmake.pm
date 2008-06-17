@@ -4,6 +4,7 @@ use strict;
 use warnings;
 
 use Getopt::Long qw(GetOptionsFromArray);
+use File::Path;
 
 use base 'Class::Accessor';
 
@@ -205,9 +206,19 @@ sub _run_mode_fo
     return $self->_run_xslt();
 }
 
+sub _mkdir
+{
+    my ($self, $dir) = @_;
+
+    mkpath($dir);
+}
+
 sub _run_mode_xhtml
 {
     my $self = shift;
+
+    # Create the directory, because xsltproc requires it.
+    $self->_mkdir($self->_output_path());
 
     return $self->_run_xslt();
 }
@@ -223,6 +234,35 @@ sub _calc_default_xslt_stylesheet
         ;
 }
 
+sub _calc_output_param_for_xslt
+{
+    my $self = shift;
+    my $args = shift;
+
+    my $output_path = $self->_output_path();
+    if (defined($args->{output_path}))
+    {
+        $output_path = $args->{output_path};
+    }
+
+    if (!defined($output_path))
+    {
+        die "Output path not specified!";
+    }
+
+    # If it's XHTML, then it's a directory and xsltproc requires that
+    # it will have a trailing slash.
+    if ($self->_mode() eq "xhtml")
+    {
+        if ($output_path !~ m{/\z})
+        {
+            $output_path .= "/";
+        }
+    }
+
+    return ["-o", $output_path];
+}
+
 sub _run_xslt
 {
     my $self = shift;
@@ -235,21 +275,10 @@ sub _run_xslt
         @stylesheet_params = ($self->_stylesheet());
     }
     
-    my $output_path = $self->_output_path();
-    if (defined($args->{output_path}))
-    {
-        $output_path = $args->{output_path};
-    }
-
-    if (!defined($output_path))
-    {
-        die "Output path not specified!";
-    }
-
     return $self->_exec_command(
         [
             "xsltproc",
-            "-o", $output_path,
+            @{$self->_calc_output_param_for_xslt($args)},
             (map { ("--stringparam", @$_ ) } @{$self->_xslt_stringparams()}),
             @stylesheet_params,
             $self->_input_path(),

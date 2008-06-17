@@ -21,6 +21,11 @@ sub _exec_command
     push @commands_executed, [@$cmd];
 }
 
+sub _mkdir
+{
+    # Do nothing - to override.
+}
+
 sub debug_commands
 {
     my @ret = @commands_executed;
@@ -57,7 +62,7 @@ package main;
             "-v",
             "--stringparam",
             "chunk.section.depth=2",
-            "-o", "output.xhtml",
+            "-o", "my-output-dir",
             "xhtml",
             "input.xml",
             ]});
@@ -72,7 +77,7 @@ package main;
         [
             [
                 "xsltproc",
-                "-o", "output.xhtml",
+                "-o", "my-output-dir/",
                 "--stringparam", "chunk.section.depth", "2",
                 "http://docbook.sourceforge.net/release/xsl/current/xhtml/docbook.xsl",
                 "input.xml",

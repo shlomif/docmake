@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 4;
+use Test::More tests => 7;
 use Test::Trap qw( trap $trap :flow:stderr(systemsafe):stdout(systemsafe):warn );
 
 use App::XML::DocBook::Docmake;
@@ -34,6 +34,19 @@ sub debug_commands
     @commands_executed = ();
 
     return \@ret;
+}
+
+package MyTest::DocmakeAppDebug::Newer;
+
+use vars qw($should_update);
+
+use vars qw(@ISA);
+
+@ISA=('MyTest::DocmakeAppDebug');
+
+sub _should_update_output
+{
+    return $should_update->(@_);
 }
 
 package main;
@@ -84,6 +97,61 @@ package main;
             ]
         ],
         "stringparam is propagated to the xsltproc command",
+    );
+}
+
+{
+    my @should_update;
+    local $MyTest::DocmakeAppDebug::Newer::should_update = sub {
+        my $self = shift;
+        my $args = shift;
+        push @should_update,
+            [ map { $_ => $args->{$_} } 
+             sort { $a cmp $b }
+             keys(%$args)
+            ]
+            ;
+        return 1;
+    };
+    my $docmake = MyTest::DocmakeAppDebug::Newer->new({argv => [
+            "-v",
+            "--make",
+            "-o", "GOTO-THE-output.pdf",
+            "pdf",
+            "MYMY-input.xml",
+            ]});
+
+    # TEST
+    ok ($docmake, "Docmake was constructed successfully");
+
+    $docmake->run();
+
+    # TEST
+    is_deeply(MyTest::DocmakeAppDebug->debug_commands(),
+        [
+            [
+                "xsltproc",
+                "-o", "GOTO-THE-output.fo",
+                "http://docbook.sourceforge.net/release/xsl/current/fo/docbook.xsl",
+                "MYMY-input.xml",
+            ],
+            [
+                "fop",
+                "-pdf",
+                "GOTO-THE-output.pdf",
+                "GOTO-THE-output.fo",
+            ],
+        ],
+        "Making sure all commands got run",
+    );
+
+    # TEST
+    is_deeply(\@should_update,
+        [
+            [ "input", "MYMY-input.xml", "output", "GOTO-THE-output.fo"],
+            [ "input", "GOTO-THE-output.fo", "output", "GOTO-THE-output.pdf" ],
+        ],
+        "should update is OK.",
     );
 }
 

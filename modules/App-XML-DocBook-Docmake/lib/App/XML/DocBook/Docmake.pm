@@ -24,6 +24,7 @@ $VERSION = "0.01";
 
 __PACKAGE__->mk_accessors(qw(
     _input_path
+    _make_like
     _mode
     _output_path
     _stylesheet
@@ -92,12 +93,14 @@ sub _init
     my $verbose = 0;
     my $stylesheet;
     my @in_stringparams;
+    my $make_like = 0;
 
     my $ret = GetOptionsFromArray($argv,
         "o=s" => \$output_path,
         "v|verbose" => \$verbose,
         "x|stylesheet=s" => \$stylesheet,
         "stringparam=s" => \@in_stringparams,
+        "make" => \$make_like,
     );
 
     my @stringparams;
@@ -117,6 +120,7 @@ sub _init
     $self->_verbose($verbose);
     $self->_stylesheet($stylesheet);
     $self->_xslt_stringparams(\@stringparams);
+    $self->_make_like($make_like);
 
     my $mode = shift(@$argv);
 
@@ -200,6 +204,27 @@ Available commands:
 EOF
 }
 
+sub _is_older
+{
+    my $self = shift;
+
+    my $file1 = shift;
+    my $file2 = shift;
+
+    my @stat1 = stat($file1);
+    my @stat2 = stat($file2);
+
+    return ($stat1[9] <= $stat2[9]);
+}
+
+sub _should_update_output
+{
+    my $self = shift;
+    my $args = shift;
+
+    return $self->_is_older($args->{output}, $args->{input});
+}
+
 sub _run_mode_fo
 {
     my $self = shift;
@@ -260,7 +285,64 @@ sub _calc_output_param_for_xslt
         }
     }
 
-    return ["-o", $output_path];
+    return $output_path;
+}
+
+sub _pre_proc_command
+{
+    my ($self, $args) = @_;
+
+    my $input_file = $args->{input};
+    my $output_file = $args->{output};
+    my $template = $args->{template};
+    
+    my @cmd;
+    foreach my $arg (@$template)
+    {
+        # If it's a string
+        if (ref($arg) eq "")
+        {
+            push @cmd, $arg;
+        }
+        elsif ($arg->is_output())
+        {
+            push @cmd, $output_file;
+        }
+        elsif ($arg->is_input())
+        {
+            push @cmd, $input_file;
+        }
+        else
+        {
+            die "Unknown Argument in Command Template.";
+        }
+    }
+    return \@cmd;
+}
+
+sub _run_input_output_cmd
+{
+    my $self = shift;
+    my $args = shift;
+
+    my $input_file = $args->{input};
+    my $output_file = $args->{output};
+
+    if (
+        (!$self->_make_like())
+            ||
+        $self->_should_update_output(
+            {
+                input => $input_file,
+                output => $output_file
+            }
+        )
+    )
+    {
+        $self->_exec_command(
+            $self->_pre_proc_command($args),
+        );
+    }
 }
 
 sub _run_xslt
@@ -274,15 +356,20 @@ sub _run_xslt
     {
         @stylesheet_params = ($self->_stylesheet());
     }
-    
-    return $self->_exec_command(
-        [
-            "xsltproc",
-            @{$self->_calc_output_param_for_xslt($args)},
-            (map { ("--stringparam", @$_ ) } @{$self->_xslt_stringparams()}),
-            @stylesheet_params,
-            $self->_input_path(),
-        ],
+ 
+    return $self->_run_input_output_cmd(
+        {
+            input => $self->_input_path(),
+            output => $self->_calc_output_param_for_xslt($args),
+            template =>
+            [
+                "xsltproc",
+                "-o", $self->_output_cmd_comp(),
+                (map { ("--stringparam", @$_ ) } @{$self->_xslt_stringparams()}),
+                @stylesheet_params,
+                $self->_input_cmd_comp(),
+            ],
+        },
     );
 }
 
@@ -293,17 +380,23 @@ sub _run_xslt_and_from_fo
 
     my $xslt_output_path = $self->_output_path();
 
+    # TODO : do something meaningful if a period (".") is not present
     $xslt_output_path =~ s{\.([^\.]*)\z}{\.fo}ms;
 
     $self->_run_xslt({output_path => $xslt_output_path});
 
-    return $self->_exec_command(
-        [
-            "fop",
-            ("-".$args->{fo_out_format}),
-            $self->_output_path(),
-            $xslt_output_path,
-        ],
+    return $self->_run_input_output_cmd(
+        {
+            input => $xslt_output_path,
+            output => $self->_output_path(),
+            template =>
+            [
+                "fop",
+                ("-".$args->{fo_out_format}),
+                $self->_output_cmd_comp(),
+                $self->_input_cmd_comp(),
+            ],
+        },
     );
 }
 
@@ -328,6 +421,41 @@ sub _run_mode_rtf
         },
     );
 }
+
+sub _input_cmd_comp
+{
+    my $self = shift;
+
+    return App::XML::DocBook::Docmake::CmdComponent->new(
+        {
+            is_input => 1,
+            is_output => 0,
+        }
+    );
+}
+
+sub _output_cmd_comp
+{
+    my $self = shift;
+
+    return App::XML::DocBook::Docmake::CmdComponent->new(
+        {
+            is_input => 0,
+            is_output => 1,
+        }
+    );
+}
+
+package App::XML::DocBook::Docmake::CmdComponent;
+
+use base 'Class::Accessor';
+
+__PACKAGE__->mk_accessors(qw(
+    is_input
+    is_output
+    ));
+
+1;
 
 =head1 AUTHOR
 

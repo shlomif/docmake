@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 7;
+use Test::More tests => 10;
 use Test::Trap qw( trap $trap :flow:stderr(systemsafe):stdout(systemsafe):warn );
 
 use App::XML::DocBook::Docmake;
@@ -143,6 +143,49 @@ package main;
             ],
         ],
         "Making sure all commands got run",
+    );
+
+    # TEST
+    is_deeply(\@should_update,
+        [
+            [ "input", "MYMY-input.xml", "output", "GOTO-THE-output.fo"],
+            [ "input", "GOTO-THE-output.fo", "output", "GOTO-THE-output.pdf" ],
+        ],
+        "should update is OK.",
+    );
+}
+
+{
+    my @should_update;
+    local $MyTest::DocmakeAppDebug::Newer::should_update = sub {
+        my $self = shift;
+        my $args = shift;
+        push @should_update,
+            [ map { $_ => $args->{$_} } 
+             sort { $a cmp $b }
+             keys(%$args)
+            ]
+            ;
+        return 0;
+    };
+    my $docmake = MyTest::DocmakeAppDebug::Newer->new({argv => [
+            "-v",
+            "--make",
+            "-o", "GOTO-THE-output.pdf",
+            "pdf",
+            "MYMY-input.xml",
+            ]});
+
+    # TEST
+    ok ($docmake, "Docmake was constructed successfully");
+
+    $docmake->run();
+
+    # TEST
+    is_deeply(MyTest::DocmakeAppDebug->debug_commands(),
+        [
+        ],
+        "No commands got run because of should_update",
     );
 
     # TEST

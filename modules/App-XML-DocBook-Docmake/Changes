@@ -1,3 +1,5 @@
-0.01    Fri Feb 16 17:41:03 IST 2007
-        First version, released on an unsuspecting world.
-
+0.01    Fri Jul 11 13:58:14 IDT 2008
+        - First version.
+        - Has "fo", "xhtml", "pdf" and "rtf" modes.
+        - Some flags.
+        - PODs, help, etc.

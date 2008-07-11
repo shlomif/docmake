@@ -14,10 +14,15 @@ my $builder = Test::Run::Builder->new(
     build_requires => {
         'Test::More' => 0,
         'Test::Trap' => 0,
-
     },
     requires => {
-            'Getopt::Long' => '2.37',
+        'Class::Accessor' => 0,
+        'File::Path' => 0,
+        'File::Spec' => 0,
+        'Getopt::Long' => '2.37',
+        'Pod::Usage' => 0,
+        'strict' => 0,
+        'warnings' => 0,
     },
     add_to_cleanup      => [ 'App::XML::DocBook::Builder-*' ],
     script_files => [ "script/docmake" ],

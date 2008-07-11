@@ -1,4 +1,3 @@
-bin/docmake
 Build.PL
 Changes
 inc/Test/Run/Builder.pm
@@ -7,6 +6,7 @@ lib/App/XML/DocBook/Docmake.pm
 MANIFEST
 META.yml # Will be created by "make dist"
 README
+script/docmake
 t/00-load.t
 t/01-use.t
 t/boilerplate.t

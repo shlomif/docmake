@@ -20,7 +20,7 @@ my $builder = Test::Run::Builder->new(
             'Getopt::Long' => '2.37',
     },
     add_to_cleanup      => [ 'App::XML::DocBook::Builder-*' ],
-    script_files => [ "bin/docmake" ],
+    script_files => [ "script/docmake" ],
 );
 
 $builder->create_build_script();

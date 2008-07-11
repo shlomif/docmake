@@ -381,7 +381,14 @@ sub _run_xslt_and_from_fo
     my $xslt_output_path = $self->_output_path();
 
     # TODO : do something meaningful if a period (".") is not present
-    $xslt_output_path =~ s{\.([^\.]*)\z}{\.fo}ms;
+    if ($xslt_output_path !~ m{\.}ms)
+    {
+        $xslt_output_path .= ".fo";
+    }
+    else
+    {
+        $xslt_output_path =~ s{\.([^\.]*)\z}{\.fo}ms;
+    }
 
     $self->_run_xslt({output_path => $xslt_output_path});
 

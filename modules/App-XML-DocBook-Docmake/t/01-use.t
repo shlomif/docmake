@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 10;
+use Test::More tests => 12;
 use Test::Trap qw( trap $trap :flow:stderr(systemsafe):stdout(systemsafe):warn );
 
 use App::XML::DocBook::Docmake;
@@ -198,3 +198,35 @@ package main;
     );
 }
 
+{
+    my $docmake = MyTest::DocmakeAppDebug->new({argv => [
+            "-v",
+            "-o", "my-output",
+            "pdf",
+            "input.xml",
+            ]});
+
+    # TEST
+    ok ($docmake, "Docmake was constructed successfully");
+
+    $docmake->run();
+
+    # TEST
+    is_deeply(MyTest::DocmakeAppDebug->debug_commands(),
+        [
+            [
+                "xsltproc",
+                "-o", "my-output.fo",
+                "http://docbook.sourceforge.net/release/xsl/current/fo/docbook.xsl",
+                "input.xml",
+            ],
+            [
+                "fop",
+                "-pdf",
+                "my-output",
+                "my-output.fo",
+            ],
+        ],
+        "testing that .fo is added if the pdf filename does not contain a prefix",
+    );
+}

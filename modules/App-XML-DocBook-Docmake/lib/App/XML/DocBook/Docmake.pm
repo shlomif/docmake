@@ -103,7 +103,7 @@ sub _init
         "x|stylesheet=s" => \$stylesheet,
         "stringparam=s" => \@in_stringparams,
         "make" => \$make_like,
-        'help|h|?' => \$help,
+        'help|h' => \$help,
         'man' => \$man,        
     );
 

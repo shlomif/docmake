@@ -83,6 +83,14 @@ The available flags are:
 
 =over 4
 
+=item * -h ; --help
+
+Display some rudimentary help.
+
+=item * --man
+
+Display the man page.
+
 =item * -v ; --verbose
 
 Verbose - output the commands' invocation as they are executed.

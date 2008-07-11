@@ -5,6 +5,7 @@ use warnings;
 
 use Getopt::Long qw(GetOptionsFromArray);
 use File::Path;
+use Pod::Usage;
 
 use base 'Class::Accessor';
 
@@ -94,6 +95,7 @@ sub _init
     my $stylesheet;
     my @in_stringparams;
     my $make_like = 0;
+    my ($help, $man);
 
     my $ret = GetOptionsFromArray($argv,
         "o=s" => \$output_path,
@@ -101,7 +103,22 @@ sub _init
         "x|stylesheet=s" => \$stylesheet,
         "stringparam=s" => \@in_stringparams,
         "make" => \$make_like,
+        'help|h|?' => \$help,
+        'man' => \$man,        
     );
+
+    if (!$ret)
+    {
+        pod2usage(2);
+    }
+    if ($help)
+    {
+        pod2usage(1);
+    }
+    if ($man)
+    {
+        pod2usage(-exitstatus => 0, -verbose => 2)
+    }
 
     my @stringparams;
     foreach my $param (@in_stringparams)

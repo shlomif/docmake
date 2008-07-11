@@ -9,3 +9,54 @@ my $docmake = App::XML::DocBook::Docmake->new({argv => [@ARGV]});
 
 exit($docmake->run());
 
+__END__
+
+=head1 NAME
+
+docmake - a tool to render DocBook/XML into various output formats.
+
+=head1 SYNOPSIS
+
+    # To render input.xml file into XHTML
+    docmake -o output.xhtml xhtml input.xml
+
+    # Same with more verbose output
+    docmake -v -o output.xhtml xhtml input.xml
+
+    # Render into pdf
+    docmake -v -o output.pdf pdf input.xml
+
+    # Same while not rebuilding if not necessary
+    docmake -v --make -o output.pdf pdf input.xml
+
+    # Render using a Stylesheet
+    docmake -v -o output.xhtml -x my-stylesheets.xsl xhtml input.xml
+
+=head1 DESCRIPTION
+
+B<docmake> is a tool to render DocBook/XML into its resultant formats
+using XSLT: XHTML, XSL-FO, PDF, RTF, etc. For a brief help type
+C<docmake help> .
+
+It aims to be a replacement for xmlto - 
+L<http://cyberelk.net/tim/software/xmlto/> . As opposed to xmlto,
+it is written in Perl, which is easier to get right than xmlto's Bash, and
+xmlto hasn't been updated for a long time when I started work on docmake.
+
+=head1 SEE ALSO
+
+=over 4 
+
+=item * DocBook on the Wikipedia - L<http://en.wikipedia.org/wiki/DocBook>
+
+=item * DocBook/XSL - The Complete Guide - L<http://www.sagehill.net/docbookxsl/>
+
+=item * The DocBook Homepage - L<http://www.docbook.org/>
+
+=item * xmlto - L<http://cyberelk.net/tim/software/xmlto/>
+
+=head1 AUTHOR
+
+Shlomi Fish E<lt>F<shlomif@iglu.org.il>E<gt>
+
+=cut

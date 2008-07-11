@@ -229,7 +229,7 @@ sub _calc_default_xslt_stylesheet
 
     my $mode = $self->_xslt_mode();
 
-    return 
+    return
         "http://docbook.sourceforge.net/release/xsl/current/${mode}/docbook.xsl"
         ;
 }
@@ -300,7 +300,8 @@ sub _run_xslt_and_from_fo
     return $self->_exec_command(
         [
             "fop",
-            ("-".$args->{fo_out_format}), $self->_output_path(),
+            ("-".$args->{fo_out_format}),
+            $self->_output_path(),
             $xslt_output_path,
         ],
     );

@@ -43,9 +43,102 @@ L<http://cyberelk.net/tim/software/xmlto/> . As opposed to xmlto,
 it is written in Perl, which is easier to get right than xmlto's Bash, and
 xmlto hasn't been updated for a long time when I started work on docmake.
 
+=head1 USAGE
+
+The basic invocation of docmake is:
+
+    docmake [flags] MODE input.xml
+
+=head2 MODES
+
+The available modes are:
+
+=over 4
+
+=item * help
+
+To get help.
+
+=item * fo
+
+Convert to XSL-FO.
+
+=item * rtf
+
+Convert to Word/RTF.
+
+=item * xhtml
+
+Convert to XHTML.
+
+=item * pdf
+
+Convert to PDF.
+
+=back
+
+=head2 FLAGS
+
+The available flags are:
+
+=over 4
+
+=item * -v ; --verbose
+
+Verbose - output the commands' invocation as they are executed.
+
+=item * -o OUTPUT_PATH
+
+Put the result in B<OUTPUT_PATH> .
+
+=item * -x STYLESHEET ; --stylesheet STYLESHEET
+
+Use the XSLT stylesheet B<STYLESHEET> for performing XSLT transformations.
+
+=item * --stringparam KEY=VALUE
+
+Specify the string parameter of B<KEY> as B<VALUE>. Note that as opposed to
+xsltproc B<KEY> and B<VALUE> cannot be as different command line arguments,
+but rather should be on the same one, delimited by an equal sign ("C<=>").
+
+=item * --make
+
+Behave like make in building files only if their dependencies are newer.
+
+=back
+
+=head2 EXAMPLES
+
+There are some examples for sample invocation in the Synopsis.
+
+
+=head1 SUPPORT
+
+You can look for information at:
+
+=over 4
+
+=item * Search CPAN
+
+L<http://search.cpan.org/dist/App-XML-DocBook-Docmake/>
+
+=item * AnnoCPAN: Annotated CPAN documentation
+
+L<http://annocpan.org/dist/App::XML::DocBook::Docmake>
+
+=item * CPAN Ratings
+
+L<http://cpanratings.perl.org/d/App::XML::DocBook::Docmake>
+
+=item * RT: CPAN's request tracker
+
+L<http://rt.cpan.org/NoAuth/Bugs.html?Dist=App::XML::DocBook::Docmake>
+
+=back
+
 =head1 SEE ALSO
 
-=over 4 
+=over 4
 
 =item * DocBook on the Wikipedia - L<http://en.wikipedia.org/wiki/DocBook>
 
@@ -55,8 +148,17 @@ xmlto hasn't been updated for a long time when I started work on docmake.
 
 =item * xmlto - L<http://cyberelk.net/tim/software/xmlto/>
 
+=back
+
+=head1 COPYRIGHT & LICENSE
+
+Copyright 2008 Shlomi Fish, all rights reserved.
+
+This program is released under the following license: MIT/X11 License.
+( L<http://www.opensource.org/licenses/mit-license.php> ).
+
 =head1 AUTHOR
 
-Shlomi Fish E<lt>F<shlomif@iglu.org.il>E<gt>
+Shlomi Fish , L<http://www.shlomifish.org/> .
 
 =cut

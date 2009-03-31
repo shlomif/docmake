@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 12;
+use Test::More tests => 14;
 use Test::Trap qw( trap $trap :flow:stderr(systemsafe):stdout(systemsafe):warn );
 
 use App::XML::DocBook::Docmake;
@@ -228,5 +228,35 @@ package main;
             ],
         ],
         "testing that .fo is added if the pdf filename does not contain a prefix",
+    );
+}
+
+{
+    my $docmake = MyTest::DocmakeAppDebug->new({argv => [
+            "-v",
+            "--stringparam",
+            "empty.param=",
+            "-o", "my-output-dir",
+            "xhtml",
+            "input.xml",
+            ]});
+
+    # TEST
+    ok ($docmake, "Docmake was constructed successfully");
+
+    $docmake->run();
+
+    # TEST
+    is_deeply(MyTest::DocmakeAppDebug->debug_commands(),
+        [
+            [
+                "xsltproc",
+                "-o", "my-output-dir/",
+                "--stringparam", "empty.param", "",
+                "http://docbook.sourceforge.net/release/xsl/current/xhtml/docbook.xsl",
+                "input.xml",
+            ]
+        ],
+        "an empty stringparam is accepted and propagated to the xsltproc command",
     );
 }

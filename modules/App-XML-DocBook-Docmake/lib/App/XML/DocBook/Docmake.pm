@@ -123,7 +123,7 @@ sub _init
     my @stringparams;
     foreach my $param (@in_stringparams)
     {
-        if ($param =~ m{\A([^=]+)=(.+)\z}ms)
+        if ($param =~ m{\A([^=]+)=(.*)\z}ms)
         {
             push @stringparams, [$1,$2];
         }

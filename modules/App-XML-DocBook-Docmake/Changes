@@ -1,3 +1,6 @@
+        - now accepting --stringparam "empty.param=" notation for empty
+        string parameters.
+
 0.01    Fri Jul 11 13:58:14 IDT 2008
         - First version.
         - Has "fo", "xhtml", "pdf" and "rtf" modes.

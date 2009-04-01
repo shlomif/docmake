@@ -1,6 +1,9 @@
 0.0101  Wed Apr  1 13:35:28 IDT 2009
         - now accepting a --stringparam empty.param="" notation for empty
         string parameters.
+        - changed the license in Build.PL from 'bsd' to 'mit' because it's:
+            - 1. More accurate.
+            - 2. Does not error on my system.
 
 0.01    Fri Jul 11 13:58:14 IDT 2008
         - First version.

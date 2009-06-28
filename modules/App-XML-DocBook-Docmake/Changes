@@ -1,3 +1,10 @@
+0.0200  Sun Jun 28 09:46:15 IDT 2009
+        - Removed the "all rights reserved" copyright language - it's not
+        compatible with the MIT/X11 License anyway.
+        - Added the COPYING file.
+        - Added 'create_makefile_pl' to the Build.PL.
+        - Added meta_merge resources and keywords to Build.PL.
+
 0.0101  Wed Apr  1 13:35:28 IDT 2009
         - now accepting a --stringparam empty.param="" notation for empty
         string parameters.

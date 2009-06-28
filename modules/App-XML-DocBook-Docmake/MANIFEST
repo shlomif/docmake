@@ -4,6 +4,7 @@ COPYING
 inc/Test/Run/Builder.pm
 lib/App/XML/DocBook/Builder.pm
 lib/App/XML/DocBook/Docmake.pm
+Makefile.PL
 MANIFEST
 META.yml # Will be created by "make dist"
 README

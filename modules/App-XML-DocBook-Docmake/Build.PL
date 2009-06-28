@@ -26,6 +26,7 @@ my $builder = Test::Run::Builder->new(
     },
     add_to_cleanup      => [ 'App::XML::DocBook::Builder-*' ],
     script_files => [ "script/docmake" ],
+    create_makefile_pl => 'traditional',
 );
 
 $builder->create_build_script();

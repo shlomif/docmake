@@ -27,6 +27,30 @@ my $builder = Test::Run::Builder->new(
     add_to_cleanup      => [ 'App::XML::DocBook::Builder-*' ],
     script_files => [ "script/docmake" ],
     create_makefile_pl => 'traditional',
+    meta_merge =>
+    {
+        resources =>
+        {
+            repository => "http://svn.berlios.de/svnroot/repos/web-cpan/App-XML-DocBook-Docmake/",
+            homepage => "http://www.shlomifish.org/open-source/projects/docmake/",
+        },
+        keywords =>
+        [
+            "automation",
+            "convert",
+            "docbook",
+            "html",
+            "pdf",
+            "postscript",
+            "script",
+            "scripts",
+            "sgml",
+            "xhtml",
+            "xml",
+            "xsl-fo",
+            "xslt",
+        ],
+    },
 );
 
 $builder->create_build_script();

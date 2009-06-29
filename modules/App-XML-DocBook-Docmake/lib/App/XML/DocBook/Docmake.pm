@@ -305,6 +305,23 @@ sub _calc_output_param_for_xslt
     return $output_path;
 }
 
+sub _calc_make_output_param_for_xslt
+{
+    my $self = shift;
+    my $args = shift;
+
+    my $output_path = $self->_calc_output_param_for_xslt($args);
+
+    # If it's XHTML, then we need to compare against the index.html
+    # because the directory is freshly made.
+    if ($self->_mode() eq "xhtml")
+    {
+        $output_path .= "index.html";
+    }
+
+    return $output_path;
+}
+
 sub _pre_proc_command
 {
     my ($self, $args) = @_;
@@ -344,6 +361,12 @@ sub _run_input_output_cmd
 
     my $input_file = $args->{input};
     my $output_file = $args->{output};
+    my $make_output_file = $args->{make_output};
+
+    if (!defined($make_output_file))
+    {
+        $make_output_file = $output_file;
+    }
 
     if (
         (!$self->_make_like())
@@ -351,7 +374,7 @@ sub _run_input_output_cmd
         $self->_should_update_output(
             {
                 input => $input_file,
-                output => $output_file
+                output => $make_output_file,
             }
         )
     )
@@ -378,6 +401,7 @@ sub _run_xslt
         {
             input => $self->_input_path(),
             output => $self->_calc_output_param_for_xslt($args),
+            make_output => $self->_calc_make_output_param_for_xslt($args),
             template =>
             [
                 "xsltproc",

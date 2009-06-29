@@ -1,5 +1,7 @@
         - Fixed --make with xhtml - previously it didn't build the
         xhtml at all.
+        - Got rid of some warnings in the --make flag with the is_older
+        flag. Made _is_older more robust. 
 
 0.0200  Sun Jun 28 09:46:15 IDT 2009
         - Removed the "all rights reserved" copyright language - it's not

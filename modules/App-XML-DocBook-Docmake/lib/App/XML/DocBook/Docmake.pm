@@ -231,7 +231,18 @@ sub _is_older
     my @stat1 = stat($file1);
     my @stat2 = stat($file2);
 
-    return ($stat1[9] <= $stat2[9]);
+    if (! @stat2)
+    {
+        die "Input file '$file1' does not exist.";
+    }
+    elsif (! @stat1)
+    {
+        return 1;
+    }
+    else
+    {
+        return ($stat1[9] <= $stat2[9]);
+    }
 }
 
 sub _should_update_output

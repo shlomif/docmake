@@ -1,5 +1,6 @@
 0.0300  Wed Apr 20 09:05:51 IDT 2011
         - Add support for the xhtml-1_1 mode.
+        - Add the tag-release.pl script.
 
 0.0201  Tue Jun 30 15:43:00 IDT 2009
         - Fixed --make with xhtml - previously it didn't build the

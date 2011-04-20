@@ -21,7 +21,7 @@ Version 0.0300
 
 use vars qw($VERSION);
 
-$VERSION = "0.0300";
+$VERSION = '0.0300';
 
 __PACKAGE__->mk_accessors(qw(
     _input_path

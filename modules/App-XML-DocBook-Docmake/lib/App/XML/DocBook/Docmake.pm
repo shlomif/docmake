@@ -30,6 +30,7 @@ __PACKAGE__->mk_accessors(qw(
     _output_path
     _stylesheet
     _verbose
+    _real_mode
     _xslt_mode
     _xslt_stringparams
 ));
@@ -61,6 +62,10 @@ my %modes =
     },
     'xhtml' =>
     {
+    },
+    'xhtml-1_1' =>
+    {
+        real_mode => "xhtml",
     },
     'rtf' =>
     {
@@ -146,6 +151,16 @@ sub _init
     if ($mode_struct)
     {
         $self->_mode($mode);
+
+        if ($mode_struct->{real_mode})
+        {
+            $self->_real_mode($mode_struct->{real_mode});
+        }
+        else
+        {
+            $self->_real_mode($mode);
+        }
+
         if ($mode_struct->{xslt_mode})
         {
             $self->_xslt_mode($mode_struct->{xslt_mode});
@@ -195,9 +210,9 @@ sub run
 {
     my $self = shift;
 
-    my $mode = $self->_mode();
+    my $real_mode = $self->_real_mode();
 
-    my $mode_func = "_run_mode_$mode";
+    my $mode_func = '_run_mode_' . $self->_real_mode;
 
     return $self->$mode_func(@_);
 }
@@ -218,6 +233,7 @@ Available commands:
     rtf - convert to RTF (MS Word).
     pdf - convert to PDF (Adobe Acrobat).
     xhtml - convert to XHTML.
+    xhtml-1_1 - convert to XHTML-1.1.
 EOF
 }
 
@@ -287,6 +303,13 @@ sub _calc_default_xslt_stylesheet
         ;
 }
 
+sub _is_xhtml
+{
+    my $self = shift;
+
+    return (($self->_mode() eq "xhtml") || ($self->_mode() eq "xhtml-1_1"));
+}
+
 sub _calc_output_param_for_xslt
 {
     my $self = shift;
@@ -305,7 +328,7 @@ sub _calc_output_param_for_xslt
 
     # If it's XHTML, then it's a directory and xsltproc requires that
     # it will have a trailing slash.
-    if ($self->_mode() eq "xhtml")
+    if ($self->_is_xhtml)
     {
         if ($output_path !~ m{/\z})
         {
@@ -325,7 +348,7 @@ sub _calc_make_output_param_for_xslt
 
     # If it's XHTML, then we need to compare against the index.html
     # because the directory is freshly made.
-    if ($self->_mode() eq "xhtml")
+    if ($self->_is_xhtml)
     {
         $output_path .= "index.html";
     }

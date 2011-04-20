@@ -11,6 +11,7 @@ README
 script/docmake
 t/00-load.t
 t/01-use.t
+tag-release.pl
 t/boilerplate.t
 t/pod-coverage.t
 t/pod.t

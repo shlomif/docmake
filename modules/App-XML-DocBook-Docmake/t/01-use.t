@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 16;
+use Test::More tests => 18;
 use Test::Trap qw( trap $trap :flow:stderr(systemsafe):stdout(systemsafe):warn );
 
 use App::XML::DocBook::Docmake;
@@ -288,5 +288,38 @@ package main;
             ]
         ],
         "Testing xhtml-1_1",
+    );
+}
+
+{
+    my $docmake = MyTest::DocmakeAppDebug->new({argv => [
+            "-v",
+            "--stringparam", "root.filename=lib/docbook/5/essays/foss-and-other-beasts-v3/all-in-one.xhtml.temp.xml",
+            "--basepath", "/home/shlomif/Download/unpack/file/docbook/docbook-xsl-ns-snapshot",
+            "--stylesheet", "lib/sgml/shlomif-docbook/xsl-5-stylesheets/shlomif-essays-5-xhtml-onechunk.xsl",
+            "xhtml-1_1",
+            "lib/docbook/5/xml/foss-and-other-beasts-v3.xml",
+            ]});
+
+    # TEST
+    ok ($docmake, "DocBook 5 (with --basepath) was initialized.");
+
+    $docmake->run();
+
+    # TEST
+    is_deeply(MyTest::DocmakeAppDebug->debug_commands(),
+        [
+            [
+                "xsltproc",
+                "--stringparam",
+                    "root.filename",
+                    "lib/docbook/5/essays/foss-and-other-beasts-v3/all-in-one.xhtml.temp.xml",
+                "--path",
+                    "/home/shlomif/Download/unpack/file/docbook/docbook-xsl-ns-snapshot/xhtml-1_1",
+                "lib/sgml/shlomif-docbook/xsl-5-stylesheets/shlomif-essays-5-xhtml-onechunk.xsl", 
+                "lib/docbook/5/xml/foss-and-other-beasts-v3.xml",
+            ]
+        ],
+        "Testing DocBook 5 (with --basepath)",
     );
 }

@@ -24,6 +24,8 @@ use vars qw($VERSION);
 $VERSION = '0.0300';
 
 __PACKAGE__->mk_accessors(qw(
+    _base_path
+    _has_output
     _input_path
     _make_like
     _mode
@@ -99,6 +101,7 @@ sub _init
     my $verbose = 0;
     my $stylesheet;
     my @in_stringparams;
+    my $base_path;
     my $make_like = 0;
     my ($help, $man);
 
@@ -107,9 +110,10 @@ sub _init
         "v|verbose" => \$verbose,
         "x|stylesheet=s" => \$stylesheet,
         "stringparam=s" => \@in_stringparams,
+        "basepath=s" => \$base_path,
         "make" => \$make_like,
         'help|h' => \$help,
-        'man' => \$man,        
+        'man' => \$man,
     );
 
     if (!$ret)
@@ -138,11 +142,16 @@ sub _init
         }
     }
 
-    $self->_output_path($output_path);
+    $self->_has_output(
+        $self->_output_path($output_path) ? 1 : 0
+    );
+
+    
     $self->_verbose($verbose);
     $self->_stylesheet($stylesheet);
     $self->_xslt_stringparams(\@stringparams);
     $self->_make_like($make_like);
+    $self->_base_path($base_path);
 
     my $mode = shift(@$argv);
 
@@ -430,17 +439,35 @@ sub _run_xslt
     {
         @stylesheet_params = ($self->_stylesheet());
     }
+
+    my @base_path_params = ();
+
+    if (defined($self->_base_path()))
+    {
+        @base_path_params =
+        (
+            "--path", 
+            ($self->_base_path() . '/' . $self->_xslt_mode()),
+        );
+    }
  
     return $self->_run_input_output_cmd(
         {
             input => $self->_input_path(),
-            output => $self->_calc_output_param_for_xslt($args),
-            make_output => $self->_calc_make_output_param_for_xslt($args),
+            ($self->_has_output()
+                ? (
+                    output => $self->_calc_output_param_for_xslt($args),
+                    make_output =>
+                        $self->_calc_make_output_param_for_xslt($args),
+                )
+                : ()
+            ),
             template =>
             [
                 "xsltproc",
-                "-o", $self->_output_cmd_comp(),
+                $self->_has_output() ? ("-o", $self->_output_cmd_comp()) : (),
                 (map { ("--stringparam", @$_ ) } @{$self->_xslt_stringparams()}),
+                @base_path_params,
                 @stylesheet_params,
                 $self->_input_cmd_comp(),
             ],

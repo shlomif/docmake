@@ -1,3 +1,10 @@
+        - Add support for --basepath
+        - Made the -o flag optional, and excluding it from xsltproc if it's
+        not specified (there are other ways to specify the output with
+        xsltproc and XSLT).
+            - These two changes were intended for adapting docmake to
+            building DocBook 5.
+
 0.0300  Wed Apr 20 09:05:51 IDT 2011
         - Add support for the xhtml-1_1 mode.
         - Add the tag-release.pl script.

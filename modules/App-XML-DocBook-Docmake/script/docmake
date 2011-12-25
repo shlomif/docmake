@@ -103,11 +103,16 @@ Put the result in B<OUTPUT_PATH> .
 
 Use the XSLT stylesheet B<STYLESHEET> for performing XSLT transformations.
 
+=item * --basepath PATH
+
+This is the base path for the DocBook stylesheets. The appropriate XSLT mode
+will be appended to it.
+
 =item * --stringparam KEY=VALUE
 
 Specify the string parameter of B<KEY> as B<VALUE>. Note that as opposed to
-xsltproc B<KEY> and B<VALUE> cannot be as different command line arguments,
-but rather should be on the same one, delimited by an equal sign ("C<=>").
+xsltproc, B<KEY> and B<VALUE> cannot be specified as different command line
+arguments, but rather should be on the same one, delimited by an equal sign ("C<=>").
 
 =item * --make
 

@@ -11,11 +11,11 @@ App::XML::DocBook::Builder - Build DocBook/XML files.
 
 =head1 VERSION
 
-Version 0.0300
+Version 0.0400
 
 =cut
 
-our $VERSION = '0.0300';
+our $VERSION = '0.0400';
 
 =head1 SYNOPSIS
 

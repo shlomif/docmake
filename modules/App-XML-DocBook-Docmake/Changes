@@ -1,3 +1,4 @@
+0.0400  Sun Dec 25 19:49:48 IST 2011
         - Add support for --basepath
         - Made the -o flag optional, and excluding it from xsltproc if it's
         not specified (there are other ways to specify the output with

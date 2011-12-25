@@ -15,13 +15,13 @@ App::XML::DocBook::Docmake - translate DocBook/XML to other formats
 
 =head1 VERSION
 
-Version 0.0300
+Version 0.0400
 
 =cut
 
 use vars qw($VERSION);
 
-$VERSION = '0.0300';
+$VERSION = '0.0400';
 
 __PACKAGE__->mk_accessors(qw(
     _base_path

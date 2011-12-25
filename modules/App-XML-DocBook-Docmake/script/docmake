@@ -106,7 +106,8 @@ Use the XSLT stylesheet B<STYLESHEET> for performing XSLT transformations.
 =item * --basepath PATH
 
 This is the base path for the DocBook stylesheets. The appropriate XSLT mode
-will be appended to it.
+will be appended to it. This is for example, useful for building DocBook 5
+documents by specifying the path to their stylesheets.
 
 =item * --stringparam KEY=VALUE
 

@@ -1,5 +1,8 @@
 modules/App-XML-DocBook-Docmake/blib
 modules/App-XML-DocBook-Docmake/_build
 modules/App-XML-DocBook-Docmake/Build
+modules/App-XML-DocBook-Docmake/Makefile.PL
+modules/App-XML-DocBook-Docmake/META.json
+modules/App-XML-DocBook-Docmake/META.yml
 modules/App-XML-DocBook-Docmake/MYMETA.json
 modules/App-XML-DocBook-Docmake/MYMETA.yml

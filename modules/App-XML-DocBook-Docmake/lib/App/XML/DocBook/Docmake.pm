@@ -373,28 +373,17 @@ sub _pre_proc_command
     my $output_file = $args->{output};
     my $template = $args->{template};
     
-    my @cmd;
-    foreach my $arg (@$template)
-    {
-        # If it's a string
-        if (ref($arg) eq "")
+    return
+    [
+        map
         {
-            push @cmd, $arg;
-        }
-        elsif ($arg->is_output())
-        {
-            push @cmd, $output_file;
-        }
-        elsif ($arg->is_input())
-        {
-            push @cmd, $input_file;
-        }
-        else
-        {
-            die "Unknown Argument in Command Template.";
-        }
-    }
-    return \@cmd;
+              (ref($_) eq '') ? $_
+            : $_->is_output() ? $output_file
+            : $_->is_input() ? $input_file
+            # Not supposed to happen
+            : do { die "Unknown Argument in Command Template."; }
+        } @$template
+    ];
 }
 
 sub _run_input_output_cmd

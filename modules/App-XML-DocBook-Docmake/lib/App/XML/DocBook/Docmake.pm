@@ -417,6 +417,31 @@ sub _run_input_output_cmd
     }
 }
 
+sub _on_output
+{
+    my ($self, $meth, $args) = @_;
+
+    return $self->_has_output() ? $self->$meth($args) : ();
+}
+
+sub _calc_output_params
+{
+    my ($self,$args) = @_;
+
+    return
+    (
+        output => $self->_calc_output_param_for_xslt($args),
+        make_output => $self->_calc_make_output_param_for_xslt($args),
+    );
+}
+
+sub _calc_template_o_flag
+{
+    my ($self,$args) = @_;
+
+    return ("-o", $self->_output_cmd_comp());
+}
+
 sub _run_xslt
 {
     my $self = shift;
@@ -443,18 +468,11 @@ sub _run_xslt
     return $self->_run_input_output_cmd(
         {
             input => $self->_input_path(),
-            ($self->_has_output()
-                ? (
-                    output => $self->_calc_output_param_for_xslt($args),
-                    make_output =>
-                        $self->_calc_make_output_param_for_xslt($args),
-                )
-                : ()
-            ),
+            $self->_on_output('_calc_output_params', $args),
             template =>
             [
                 "xsltproc",
-                $self->_has_output() ? ("-o", $self->_output_cmd_comp()) : (),
+                $self->_on_output('_calc_template_o_flag', $args),
                 (map { ("--stringparam", @$_ ) } @{$self->_xslt_stringparams()}),
                 @base_path_params,
                 @stylesheet_params,

@@ -161,23 +161,13 @@ sub _init
     {
         $self->_mode($mode);
 
-        if ($mode_struct->{real_mode})
-        {
-            $self->_real_mode($mode_struct->{real_mode});
-        }
-        else
-        {
-            $self->_real_mode($mode);
-        }
+        my $assign_secondary_mode = sub {
+            my ($struct_field, $attr) = @_;
+            $self->$attr($mode_struct->{$struct_field} || $mode);
+        };
 
-        if ($mode_struct->{xslt_mode})
-        {
-            $self->_xslt_mode($mode_struct->{xslt_mode});
-        }
-        else
-        {
-            $self->_xslt_mode($self->_mode());
-        }
+        $assign_secondary_mode->('real_mode', '_real_mode');
+        $assign_secondary_mode->('xslt_mode', '_xslt_mode');
     }
     else
     {

@@ -442,6 +442,13 @@ sub _calc_template_o_flag
     return ("-o", $self->_output_cmd_comp());
 }
 
+sub _calc_template_string_params
+{
+    my ($self) = @_;
+
+    return [map { ("--stringparam", @$_ ) } @{$self->_xslt_stringparams()}];
+}
+
 sub _run_xslt
 {
     my $self = shift;
@@ -473,7 +480,7 @@ sub _run_xslt
             [
                 "xsltproc",
                 $self->_on_output('_calc_template_o_flag', $args),
-                (map { ("--stringparam", @$_ ) } @{$self->_xslt_stringparams()}),
+                @{$self->_calc_template_string_params()},
                 @base_path_params,
                 @stylesheet_params,
                 $self->_input_cmd_comp(),

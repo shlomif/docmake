@@ -9,9 +9,9 @@ MANIFEST
 META.yml # Will be created by "make dist"
 README
 script/docmake
+script/tag-release.pl
 t/00-load.t
 t/01-use.t
-tag-release.pl
 t/boilerplate.t
 t/pod-coverage.t
 t/pod.t

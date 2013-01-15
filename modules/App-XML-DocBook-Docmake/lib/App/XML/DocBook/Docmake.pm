@@ -202,7 +202,12 @@ sub _exec_command
     {
         print (join(" ", @$cmd), "\n");
     }
-    return system(@$cmd);
+
+    if (!system(@$cmd)) {
+        die qq/<<@$cmd>> failed./;
+    }
+
+    return;
 }
 
 sub run

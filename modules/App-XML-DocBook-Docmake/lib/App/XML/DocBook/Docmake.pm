@@ -203,11 +203,11 @@ sub _exec_command
         print (join(" ", @$cmd), "\n");
     }
 
-    if (!system(@$cmd)) {
+    if (system(@$cmd)) {
         die qq/<<@$cmd>> failed./;
     }
 
-    return;
+    return 0;
 }
 
 sub run

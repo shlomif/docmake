@@ -8,6 +8,7 @@ Makefile.PL
 MANIFEST
 META.yml # Will be created by "make dist"
 README
+script/bump-version-number.pl
 script/docmake
 script/tag-release.pl
 t/00-load.t

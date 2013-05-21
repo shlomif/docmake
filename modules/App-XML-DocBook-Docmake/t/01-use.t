@@ -17,7 +17,7 @@ use base 'App::XML::DocBook::Docmake';
 sub _exec_command
 {
     my ($self, $cmd) = @_;
-    
+
     push @commands_executed, [@$cmd];
 }
 
@@ -60,7 +60,7 @@ package main;
 
 {
     my $docmake = App::XML::DocBook::Docmake->new({argv => ["help"]});
-    
+
     trap { $docmake->run(); };
 
     # TEST
@@ -106,7 +106,7 @@ package main;
         my $self = shift;
         my $args = shift;
         push @should_update,
-            [ map { $_ => $args->{$_} } 
+            [ map { $_ => $args->{$_} }
              sort { $a cmp $b }
              keys(%$args)
             ]
@@ -161,7 +161,7 @@ package main;
         my $self = shift;
         my $args = shift;
         push @should_update,
-            [ map { $_ => $args->{$_} } 
+            [ map { $_ => $args->{$_} }
              sort { $a cmp $b }
              keys(%$args)
             ]
@@ -316,7 +316,7 @@ package main;
                     "lib/docbook/5/essays/foss-and-other-beasts-v3/all-in-one.xhtml.temp.xml",
                 "--path",
                     "/home/shlomif/Download/unpack/file/docbook/docbook-xsl-ns-snapshot/xhtml-1_1",
-                "lib/sgml/shlomif-docbook/xsl-5-stylesheets/shlomif-essays-5-xhtml-onechunk.xsl", 
+                "lib/sgml/shlomif-docbook/xsl-5-stylesheets/shlomif-essays-5-xhtml-onechunk.xsl",
                 "lib/docbook/5/xml/foss-and-other-beasts-v3.xml",
             ]
         ],

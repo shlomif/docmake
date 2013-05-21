@@ -35,7 +35,7 @@ my $builder = Test::Run::Builder->new(
     {
         resources =>
         {
-            repository => "http://svn.berlios.de/svnroot/repos/web-cpan/App-XML-DocBook-Docmake/",
+            repository => "http://bitbucket.org/shlomif/docmake",
             homepage => "http://www.shlomifish.org/open-source/projects/docmake/",
         },
         keywords =>

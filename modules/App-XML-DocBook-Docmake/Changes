@@ -1,5 +1,6 @@
 0.0402  Tue 21 May 17:48:25 IDT 2013
         - Remove trailing space - t/style-trailing-space.t .
+        - Update the repository in Build.PL .
 
 0.0401  Wed  5 Sep 19:45:47 IDT 2012
         - Move away tag-release.pl under script.

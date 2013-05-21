@@ -6,3 +6,6 @@ modules/App-XML-DocBook-Docmake/META.json
 modules/App-XML-DocBook-Docmake/META.yml
 modules/App-XML-DocBook-Docmake/MYMETA.json
 modules/App-XML-DocBook-Docmake/MYMETA.yml
+
+syntax: regexp
+^modules/App-XML-DocBook-Docmake/App-XML-DocBook-Builder-\d+\.\d+(?:/|\.tar\.gz$)

@@ -1,3 +1,6 @@
+0.0403  2014-01-26
+        - Remove the Makefile.PL - not we are Build.PL only.
+
 0.0402  2013-05-21
         - Remove trailing space - t/style-trailing-space.t .
         - Update the repository in Build.PL .

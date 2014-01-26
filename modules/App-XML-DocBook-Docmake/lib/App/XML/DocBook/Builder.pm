@@ -3,7 +3,9 @@ package App::XML::DocBook::Builder;
 use warnings;
 use strict;
 
-use base 'Class::Accessor';
+use 5.008;
+
+use parent 'Class::Accessor';
 
 =head1 NAME
 

@@ -25,6 +25,8 @@ my $builder = Test::Run::Builder->new(
         'File::Spec' => 0,
         'Getopt::Long' => '2.37',
         'Pod::Usage' => 0,
+        'parent' => 0,
+        'perl' => '5.008',
         'strict' => 0,
         'warnings' => 0,
     },

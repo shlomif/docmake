@@ -3,11 +3,13 @@ package App::XML::DocBook::Docmake;
 use strict;
 use warnings;
 
+use 5.008;
+
 use Getopt::Long qw(GetOptionsFromArray);
 use File::Path;
 use Pod::Usage;
 
-use base 'Class::Accessor';
+use parent 'Class::Accessor';
 
 =head1 NAME
 

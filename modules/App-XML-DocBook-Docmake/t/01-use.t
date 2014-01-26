@@ -12,7 +12,7 @@ package MyTest::DocmakeAppDebug;
 
 use vars qw(@commands_executed);
 
-use base 'App::XML::DocBook::Docmake';
+use parent 'App::XML::DocBook::Docmake';
 
 sub _exec_command
 {

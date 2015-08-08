@@ -10,8 +10,8 @@
     <xsl:param name="css.decoration">0</xsl:param>
     <xsl:param name="ulink.target"></xsl:param>
     <xsl:param name="use.viewport">0</xsl:param>
-    <!-- End of Strict Params -->    
-    <xsl:param name="toc.section.depth">10</xsl:param> 
+    <!-- End of Strict Params -->
+    <xsl:param name="toc.section.depth">10</xsl:param>
     <xsl:param name="generate.section.toc.level">10</xsl:param>
     <!-- Enable fop extensions - see:
     http://www.sagehill.net/docbookxsl/InstallingAnFO.html
@@ -26,7 +26,7 @@
       <xsl:call-template name="formal.object.heading"/>
     </xsl:if>
 
-    <xsl:apply-templates select="*[not(self::listitem or self::title 
+    <xsl:apply-templates select="*[not(self::listitem or self::title
         or self::titleabbrev)]"/>
 
     <ul>

@@ -1,3 +1,8 @@
+0.0404  2016-02-09
+        - Fix an obscure and unhelpful run on "docmake pdf" without an "-o"
+        flag.
+            - With tests.
+
 0.0403  2014-01-26
         - Remove the Makefile.PL - not we are Build.PL only.
         - Set minimal version of perl to be 5.008 (5.8.0).

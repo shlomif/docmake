@@ -493,6 +493,11 @@ sub _run_xslt_and_from_fo
 
     my $xslt_output_path = $self->_output_path();
 
+    if (!defined ($xslt_output_path))
+    {
+        die "No -o flag was specified. See the help.";
+    }
+
     # TODO : do something meaningful if a period (".") is not present
     if ($xslt_output_path !~ m{\.}ms)
     {

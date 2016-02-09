@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 18;
+use Test::More tests => 21;
 use Test::Trap qw( trap $trap :flow:stderr(systemsafe):stdout(systemsafe):warn );
 
 use App::XML::DocBook::Docmake;
@@ -322,4 +322,32 @@ package main;
         ],
         "Testing DocBook 5 (with --basepath)",
     );
+}
+
+{
+    my $docmake = MyTest::DocmakeAppDebug->new({argv => [
+            "pdf",
+            "input.xml",
+            ]});
+
+    # TEST
+    ok ($docmake, "Docmake was constructed successfully");
+
+    trap
+    {
+        $docmake->run();
+    };
+
+    # TEST
+    like ($trap->die(),
+        qr/No -o flag was specified/,
+        "Testing that an exception was thrown on pdf without the -o flag",
+    );
+
+    # TEST
+    is_deeply(MyTest::DocmakeAppDebug->debug_commands(),
+        [],
+        "Testing that no commands were run on pdf without the -o flag",
+    );
+
 }

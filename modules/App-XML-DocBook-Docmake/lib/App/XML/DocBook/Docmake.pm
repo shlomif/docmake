@@ -15,15 +15,7 @@ use parent 'Class::Accessor';
 
 App::XML::DocBook::Docmake - translate DocBook/XML to other formats
 
-=head1 VERSION
-
-Version 0.0404
-
 =cut
-
-use vars qw($VERSION);
-
-$VERSION = '0.0404';
 
 __PACKAGE__->mk_accessors(qw(
     _base_path
@@ -228,7 +220,7 @@ sub _run_mode_help
     my $self = shift;
 
     print <<"EOF";
-Docmake version $VERSION
+Docmake version $App::XML::DocBook::Docmake::VERSION
 A tool to convert DocBook/XML to other formats
 
 Available commands:

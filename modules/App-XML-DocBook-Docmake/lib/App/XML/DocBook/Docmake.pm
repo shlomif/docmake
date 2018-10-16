@@ -284,7 +284,10 @@ sub _run_mode_xhtml
     my $self = shift;
 
     # Create the directory, because xsltproc requires it.
-    $self->_mkdir( $self->_output_path() );
+    if ( $self->_trailing_slash )
+    {
+        $self->_mkdir( $self->_output_path() );
+    }
 
     return $self->_run_xslt();
 }

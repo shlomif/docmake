@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 25;
+use Test::More tests => 26;
 use Test::Trap
     qw( trap $trap :flow:stderr(systemsafe):stdout(systemsafe):warn );
 
@@ -424,6 +424,9 @@ qr{Docmake version.*^A tool to convert DocBook/XML to other formats.*^Available 
     ok( $docmake, "xhtml5 docmake was constructed successfully" );
 
     $docmake->run();
+
+    # TEST
+    ok(scalar(! -e "my-output-dir/notneeded.xhtml"), "not created.");
 
     # TEST
     is_deeply(

@@ -26,6 +26,7 @@ __PACKAGE__->mk_accessors(
         _mode
         _output_path
         _stylesheet
+        _trailing_slash
         _verbose
         _real_mode
         _xslt_mode
@@ -94,17 +95,19 @@ sub _init
     my $base_path;
     my $make_like = 0;
     my ( $help, $man );
+    my $trailing_slash = 1;
 
     my $ret = GetOptionsFromArray(
         $argv,
-        "o=s"            => \$output_path,
-        "v|verbose"      => \$verbose,
-        "x|stylesheet=s" => \$stylesheet,
-        "stringparam=s"  => \@in_stringparams,
-        "basepath=s"     => \$base_path,
-        "make"           => \$make_like,
-        'help|h'         => \$help,
-        'man'            => \$man,
+        "o=s"              => \$output_path,
+        "v|verbose"        => \$verbose,
+        "x|stylesheet=s"   => \$stylesheet,
+        "stringparam=s"    => \@in_stringparams,
+        "basepath=s"       => \$base_path,
+        "make"             => \$make_like,
+        'help|h'           => \$help,
+        'man'              => \$man,
+        'trailing-slash=i' => \$trailing_slash,
     );
 
     if ( !$ret )
@@ -140,6 +143,7 @@ sub _init
     $self->_xslt_stringparams( \@stringparams );
     $self->_make_like($make_like);
     $self->_base_path($base_path);
+    $self->_trailing_slash($trailing_slash);
 
     my $mode = shift(@$argv);
 
@@ -324,9 +328,12 @@ sub _calc_output_param_for_xslt
     # it will have a trailing slash.
     if ( $self->_is_xhtml )
     {
-        if ( $output_path !~ m{/\z} )
+        if ( $self->_trailing_slash )
         {
-            $output_path .= "/";
+            if ( $output_path !~ m{/\z} )
+            {
+                $output_path .= "/";
+            }
         }
     }
 

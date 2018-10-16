@@ -1,4 +1,5 @@
 #!/usr/bin/perl
+# PODNAME: docmake
 
 use strict;
 use warnings;

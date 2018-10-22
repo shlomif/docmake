@@ -24,6 +24,9 @@ docmake - a tool to render DocBook/XML into various output formats.
     # Same with more verbose output
     docmake -v -o output.xhtml xhtml input.xml
 
+    # Avoid trailing slash when emitting to a dummy file in a dir
+    docmake --trailing-slash=0 -o output/notneeded.xhtml xhtml5 input.xml
+
     # Render into pdf
     docmake -v -o output.pdf pdf input.xml
 
@@ -115,6 +118,11 @@ documents by specifying the path to their stylesheets.
 Specify the string parameter of B<KEY> as B<VALUE>. Note that as opposed to
 xsltproc, B<KEY> and B<VALUE> cannot be specified as different command line
 arguments, but rather should be on the same one, delimited by an equal sign ("C<=>").
+
+=item * --trailing-slash=0
+
+Disable adding a trailing slash when building into an HTML file, to emit
+an unneeded file there. B<Note> the C<=0> argument.
 
 =item * --make
 

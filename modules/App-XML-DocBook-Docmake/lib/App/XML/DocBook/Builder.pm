@@ -39,8 +39,8 @@ sub initialize_makefiles
 
     my $redirect_makefile = "docmake.mak";
 
-    open my $docbook_mak, ">", $redirect_makefile or
-        die "Could not open Makefile for writing";
+    open my $docbook_mak, ">", $redirect_makefile
+        or die "Could not open Makefile for writing";
 
     print $docbook_mak <<"EOF";
 DOCBOOK_MAK_PATH = $inst_dir
@@ -50,11 +50,13 @@ DOCBOOK_MAK_MAKEFILES_PATH = \$(DOCBOOK_MAK_PATH)/share/make/
 include \$(DOCBOOK_MAK_MAKEFILES_PATH)/main-docbook.mak
 EOF
 
-    close ($docbook_mak);
+    close($docbook_mak);
 
     open my $main_mak, ">", "Makefile.main";
-    print $main_mak "DOC = " . $args->{doc_base} . "\n\ninclude $redirect_makefile\n\n";
-    close ($main_mak);
+    print $main_mak "DOC = "
+        . $args->{doc_base}
+        . "\n\ninclude $redirect_makefile\n\n";
+    close($main_mak);
 }
 
 =head1 AUTHOR
@@ -109,4 +111,4 @@ L<http://www.opensource.org/licenses/mit-license.php>
 
 =cut
 
-1; # End of App::XML::DocBook::Builder
+1;    # End of App::XML::DocBook::Builder

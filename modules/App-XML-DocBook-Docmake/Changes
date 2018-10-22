@@ -1,3 +1,6 @@
+0.0603  2018-10-22
+        - Move to git+GitHub.
+
 0.0602  2018-10-22
         - Document --trailing-slash=0 .
 

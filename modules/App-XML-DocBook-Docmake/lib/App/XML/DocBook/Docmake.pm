@@ -466,6 +466,7 @@ sub _run_xslt
             $self->_on_output( '_calc_output_params', $args ),
             template => [
                 "xsltproc",
+                "--nonet",
                 $self->_on_output( '_calc_template_o_flag', $args ),
                 @{ $self->_calc_template_string_params() },
                 @base_path_params,

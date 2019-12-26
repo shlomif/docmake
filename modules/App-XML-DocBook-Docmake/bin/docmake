@@ -4,11 +4,11 @@
 use strict;
 use warnings;
 
-use App::XML::DocBook::Docmake;
+use App::Docmake;
 
-my $docmake = App::XML::DocBook::Docmake->new({argv => [@ARGV]});
+my $docmake = App::Docmake->new( { argv => [@ARGV] } );
 
-exit($docmake->run());
+exit( $docmake->run() );
 
 __END__
 

@@ -4,11 +4,9 @@
 use strict;
 use warnings;
 
-use App::Docmake;
+use App::Docmake ();
 
-my $docmake = App::Docmake->new( { argv => [@ARGV] } );
-
-exit( $docmake->run() );
+exit( App::Docmake->new( { argv => [@ARGV] } )->run() );
 
 __END__
 

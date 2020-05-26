@@ -1,15 +1,12 @@
 package App::XML::DocBook::Docmake;
 
+use 5.014;
 use strict;
 use warnings;
 
-use 5.008;
-
-use Getopt::Long qw(GetOptionsFromArray);
-use File::Path;
-use Pod::Usage;
-
-use parent 'Class::Accessor';
+use Getopt::Long qw/ GetOptionsFromArray /;
+use File::Path qw/ mkpath /;
+use Pod::Usage qw/ pod2usage /;
 
 =head1 NAME
 
@@ -17,26 +14,28 @@ App::XML::DocBook::Docmake - translate DocBook/XML to other formats
 
 =cut
 
-__PACKAGE__->mk_accessors(
-    qw(
-        _base_path
-        _has_output
-        _input_path
-        _make_like
-        _mode
-        _output_path
-        _stylesheet
-        _trailing_slash
-        _verbose
-        _real_mode
-        _xslt_mode
-        _xslt_stringparams
-        )
-);
+use Class::XSAccessor {
+    accessors => [
+        qw(
+            _base_path
+            _has_output
+            _input_path
+            _make_like
+            _mode
+            _output_path
+            _stylesheet
+            _trailing_slash
+            _verbose
+            _real_mode
+            _xslt_mode
+            _xslt_stringparams
+            )
+    ]
+};
 
 =head1 SYNOPSIS
 
-    use App::XML::DocBook::Docmake;
+    use App::XML::DocBook::Docmake ();
 
     my $docmake = App::XML::DocBook::Docmake->new({argv => [@ARGV]});
 
@@ -561,14 +560,21 @@ sub _output_cmd_comp
 
 package App::XML::DocBook::Docmake::CmdComponent;
 
-use base 'Class::Accessor';
+use Class::XSAccessor {
+    accessors => [
 
-__PACKAGE__->mk_accessors(
-    qw(
-        is_input
-        is_output
-        )
-);
+        qw(
+            is_input
+            is_output
+            )
+    ]
+};
+
+sub new
+{
+    my ( $class, $self ) = @_;
+    return bless $self, $class;
+}
 
 1;
 

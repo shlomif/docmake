@@ -1,8 +1,8 @@
 package App::Docmake;
 
+use 5.014;
 use strict;
 use warnings;
-use 5.014;
 
 use parent 'App::XML::DocBook::Docmake';
 

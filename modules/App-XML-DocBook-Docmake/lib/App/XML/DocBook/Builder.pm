@@ -1,11 +1,17 @@
 package App::XML::DocBook::Builder;
 
-use warnings;
+use 5.014;
 use strict;
+use warnings;
 
-use 5.008;
+sub new
+{
+    my $class = shift;
 
-use parent 'Class::Accessor';
+    return bless {}, $class;
+}
+
+1;
 
 =head1 NAME
 
@@ -13,7 +19,7 @@ App::XML::DocBook::Builder - Build DocBook/XML files.
 
 =head1 SYNOPSIS
 
-    use App::XML::DocBook::Builder;
+    use App::XML::DocBook::Builder ();
 
     my $foo = App::XML::DocBook::Builder->new();
 
@@ -22,6 +28,10 @@ App::XML::DocBook::Builder - Build DocBook/XML files.
 my $inst_dir = "$ENV{HOME}/apps/docbook-builder";
 
 =head1 FUNCTIONS
+
+=head2 new
+
+A constructor.
 
 =head2 initialize_makefiles($args)
 

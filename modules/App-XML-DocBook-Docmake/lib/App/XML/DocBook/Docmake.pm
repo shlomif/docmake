@@ -203,12 +203,13 @@ sub _exec_command
     my $exit_code;
     trap
     {
+        # local $ENV{LC_ALL} = "C.utf-8";
         $exit_code = system(@$cmd);
     };
 
     my $stderr = $trap->stderr();
 
-    if ( not( ( defined($exit_code) ) and $exit_code ) )
+    if ( not( ( defined($exit_code) ) and ( !$exit_code ) ) )
     {
         if ( $stderr =~ m#Attempt to load network entity# )
         {
@@ -218,10 +219,12 @@ sub _exec_command
 Running xsltproc failed due to lacking local DocBook 5/XSL stylesheets and data.
 See: https://github.com/shlomif/fortune-mod/issues/45 and
 https://github.com/docbook/wiki/wiki/DocBookXslStylesheets
+
+Command was <<@$cmd>>;
 EOF
             }
         }
-        die qq/<<@$cmd>> failed./;
+        die qq/$stderr\n<<@$cmd>> failed./;
     }
 
     return 0;

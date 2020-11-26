@@ -203,7 +203,7 @@ sub _exec_command
     my $exit_code;
     trap
     {
-        # local $ENV{LC_ALL} = "C.utf-8";
+        local $ENV{LC_ALL} = "C.utf-8";
         $exit_code = system(@$cmd);
     };
 

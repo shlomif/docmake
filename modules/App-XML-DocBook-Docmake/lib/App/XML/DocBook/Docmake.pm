@@ -33,6 +33,9 @@ use Class::XSAccessor {
     ]
 };
 
+use Test::Trap
+    qw( trap $trap :flow:stderr(systemsafe):stdout(systemsafe):warn );
+
 =head1 SYNOPSIS
 
     use App::XML::DocBook::Docmake ();
@@ -188,15 +191,36 @@ Runs the object.
 
 sub _exec_command
 {
-    my ( $self, $cmd ) = @_;
+    my ( $self, $args ) = @_;
+
+    my $cmd = $args->{cmd};
 
     if ( $self->_verbose() )
     {
         print( join( " ", @$cmd ), "\n" );
     }
 
-    if ( system(@$cmd) )
+    my $exit_code;
+    trap
     {
+        $exit_code = system(@$cmd);
+    };
+
+    my $stderr = $trap->stderr();
+
+    if ( not( ( defined($exit_code) ) and $exit_code ) )
+    {
+        if ( $stderr =~ m#Attempt to load network entity# )
+        {
+            if ( $args->{xsltproc} )
+            {
+                die <<"EOF";
+Running xsltproc failed due to lacking local DocBook 5/XSL stylesheets and data.
+See: https://github.com/shlomif/fortune-mod/issues/45 and
+https://github.com/docbook/wiki/wiki/DocBookXslStylesheets
+EOF
+            }
+        }
         die qq/<<@$cmd>> failed./;
     }
 
@@ -384,17 +408,21 @@ sub _pre_proc_command
     my $input_file  = $args->{input};
     my $output_file = $args->{output};
     my $template    = $args->{template};
+    my $xsltproc    = ( $args->{xsltproc} // ( die "no xsltproc key" ) );
 
-    return [
-        map {
-                  ( ref($_) eq '' ) ? $_
-                : $_->is_output()   ? $output_file
-                : $_->is_input()    ? $input_file
+    return +{
+        xsltproc => $xsltproc,
+        cmd      => [
+            map {
+                      ( ref($_) eq '' ) ? $_
+                    : $_->is_output()   ? $output_file
+                    : $_->is_input()    ? $input_file
 
-                # Not supposed to happen
-                : do { die "Unknown Argument in Command Template."; }
-        } @$template
-    ];
+                    # Not supposed to happen
+                    : do { die "Unknown Argument in Command Template."; }
+            } @$template
+        ]
+    };
 }
 
 sub _run_input_output_cmd
@@ -481,6 +509,7 @@ sub _run_xslt
         {
             input => $self->_input_path(),
             $self->_on_output( '_calc_output_params', $args ),
+            xsltproc => 1,
             template => [
                 "xsltproc",
                 "--nonet",
@@ -526,6 +555,7 @@ sub _run_xslt_and_from_fo
                 "fop", ( "-" . $args->{fo_out_format} ),
                 $self->_output_cmd_comp(), $self->_input_cmd_comp(),
             ],
+            xsltproc => 0,
         },
     );
 }

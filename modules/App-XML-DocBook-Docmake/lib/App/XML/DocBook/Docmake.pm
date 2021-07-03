@@ -29,7 +29,7 @@ use Class::XSAccessor {
             _real_mode
             _xslt_mode
             _xslt_stringparams
-            )
+        )
     ]
 };
 
@@ -265,25 +265,22 @@ EOF
 
 sub _is_older
 {
-    my $self = shift;
+    my ( $self, $result_fn, $source_fn ) = @_;
 
-    my $file1 = shift;
-    my $file2 = shift;
+    my @result_stat = stat($result_fn);
+    my @source_stat = stat($source_fn);
 
-    my @stat1 = stat($file1);
-    my @stat2 = stat($file2);
-
-    if ( !@stat2 )
+    if ( !@source_stat )
     {
-        die "Input file '$file1' does not exist.";
+        die "Input file '$result_fn' does not exist.";
     }
-    elsif ( !@stat1 )
+    elsif ( !@result_stat )
     {
         return 1;
     }
     else
     {
-        return ( $stat1[9] <= $stat2[9] );
+        return ( $result_stat[9] <= $source_stat[9] );
     }
 }
 
@@ -617,7 +614,7 @@ use Class::XSAccessor {
         qw(
             is_input
             is_output
-            )
+        )
     ]
 };
 

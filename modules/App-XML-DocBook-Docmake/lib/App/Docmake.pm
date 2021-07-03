@@ -26,4 +26,3 @@ C<cpanm App::Docmake> or similar.
 =cut
 
 1;
-

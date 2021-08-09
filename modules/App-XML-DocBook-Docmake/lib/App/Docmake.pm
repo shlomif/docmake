@@ -23,6 +23,10 @@ App::Docmake - translate DocBook/XML to other formats
 Created as a shorthand namespace so people can say
 C<cpanm App::Docmake> or similar.
 
+=head1 SEE ALSO
+
+L<App::XML::DocBook::Docmake>
+
 =cut
 
 1;

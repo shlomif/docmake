@@ -497,7 +497,7 @@ sub _run_xslt
         @stylesheet_params = ( $self->_stylesheet() );
     }
 
-    my @base_path_params = ();
+    my @base_path_params;
 
     if ( defined( $self->_base_path() ) )
     {

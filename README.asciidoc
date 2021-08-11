@@ -1,0 +1,18 @@
+Docmake is an automated builder from https://en.wikipedia.org/wiki/DocBook[DocBook/XML] to its output formats (e.g XHTML5 or PDF).
+It aims to be a saner replacement for https://pagure.io/xmlto/[xmlto].
+
+( Note that xmlto's development has stagnated somewhat right before the
+release of the first version of docmake. )
+
+See:
+
+* http://www.shlomifish.org/open-source/projects/docmake/[Docmake's Homepage]
+* https://metacpan.org/release/App-XML-DocBook-Builder[MetaCPAN Record]
+
+To install use:
+
+----
+cpanm App::docmake
+# Less preferable:
+cpan App::docmake
+----

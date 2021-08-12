@@ -8,11 +8,12 @@ See:
 
 * http://www.shlomifish.org/open-source/projects/docmake/[Docmake's Homepage]
 * https://metacpan.org/release/App-XML-DocBook-Builder[MetaCPAN Record]
+* https://github.com/shlomif/cookiecutter--shlomif-latemp-sites/tree/master/%7B%7Bcookiecutter.project_slug%7D%7D/lib/make/docbook[A higher level framework for rendering DocBook]
 
 To install use:
 
 ----
-cpanm App::docmake
+cpanm App::Docmake
 # Less preferable:
-cpan App::docmake
+cpan App::Docmake
 ----

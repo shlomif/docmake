@@ -87,6 +87,13 @@ sub new
     return $self;
 }
 
+sub _lookup_mode_struct
+{
+    my ( $self, $mode ) = @_;
+
+    return $modes{$mode};
+}
+
 sub _init
 {
     my ( $self, $args ) = @_;
@@ -152,7 +159,7 @@ sub _init
 
     my $mode = shift(@$argv);
 
-    my $mode_struct = $modes{$mode};
+    my $mode_struct = $self->_lookup_mode_struct($mode);
 
     if ($mode_struct)
     {

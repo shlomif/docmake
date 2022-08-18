@@ -8,6 +8,8 @@ use Getopt::Long qw/ GetOptionsFromArray /;
 use File::Path   qw/ mkpath /;
 use Pod::Usage   qw/ pod2usage /;
 
+use File::ShouldUpdate v0.2.0 qw/ should_update_multi /;
+
 =head1 NAME
 
 App::XML::DocBook::Docmake - translate DocBook/XML to other formats
@@ -267,21 +269,7 @@ sub _is_older
 {
     my ( $self, $result_fn, $source_fn ) = @_;
 
-    my @result_stat = stat($result_fn);
-    my @source_stat = stat($source_fn);
-
-    if ( !@source_stat )
-    {
-        die "Input file '$result_fn' does not exist.";
-    }
-    elsif ( !@result_stat )
-    {
-        return 1;
-    }
-    else
-    {
-        return ( $result_stat[9] <= $source_stat[9] );
-    }
+    return should_update_multi( [ $result_fn, ], ':', [ $source_fn, ] );
 }
 
 sub _should_update_output

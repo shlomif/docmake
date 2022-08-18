@@ -286,8 +286,7 @@ sub _is_older
 
 sub _should_update_output
 {
-    my $self = shift;
-    my $args = shift;
+    my ( $self, $args ) = @_;
 
     return $self->_is_older( $args->{output}, $args->{input} );
 }
@@ -354,8 +353,7 @@ sub _is_xhtml
 
 sub _calc_output_param_for_xslt
 {
-    my $self = shift;
-    my $args = shift;
+    my ( $self, $args ) = @_;
 
     my $output_path = $self->_output_path();
     if ( defined( $args->{output_path} ) )
@@ -386,8 +384,7 @@ sub _calc_output_param_for_xslt
 
 sub _calc_make_output_param_for_xslt
 {
-    my $self = shift;
-    my $args = shift;
+    my ( $self, $args ) = @_;
 
     my $output_path = $self->_calc_output_param_for_xslt($args);
 
@@ -427,8 +424,7 @@ sub _pre_proc_command
 
 sub _run_input_output_cmd
 {
-    my $self = shift;
-    my $args = shift;
+    my ( $self, $args ) = @_;
 
     my $input_file       = $args->{input};
     my $output_file      = $args->{output};
@@ -487,8 +483,7 @@ sub _calc_template_string_params
 
 sub _run_xslt
 {
-    my $self = shift;
-    my $args = shift;
+    my ( $self, $args ) = @_;
 
     my @stylesheet_params = ( $self->_calc_default_xslt_stylesheet() );
 
@@ -525,8 +520,7 @@ sub _run_xslt
 
 sub _run_xslt_and_from_fo
 {
-    my $self = shift;
-    my $args = shift;
+    my ( $self, $args ) = @_;
 
     my $xslt_output_path = $self->_output_path();
 

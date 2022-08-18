@@ -87,11 +87,18 @@ sub new
     return $self;
 }
 
+sub _calc_modes_hash
+{
+    my ( $self, ) = @_;
+
+    return \%modes;
+}
+
 sub _lookup_mode_struct
 {
     my ( $self, $mode ) = @_;
 
-    return $modes{$mode};
+    return $self->_calc_modes_hash()->{$mode};
 }
 
 sub _init

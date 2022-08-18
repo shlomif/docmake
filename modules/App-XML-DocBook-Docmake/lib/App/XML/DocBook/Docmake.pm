@@ -5,8 +5,8 @@ use strict;
 use warnings;
 
 use Getopt::Long qw/ GetOptionsFromArray /;
-use File::Path qw/ mkpath /;
-use Pod::Usage qw/ pod2usage /;
+use File::Path   qw/ mkpath /;
+use Pod::Usage   qw/ pod2usage /;
 
 =head1 NAME
 

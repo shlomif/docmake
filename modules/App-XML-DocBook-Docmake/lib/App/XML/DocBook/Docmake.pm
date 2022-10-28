@@ -29,6 +29,7 @@ use Class::XSAccessor {
             _output_path
             _stylesheet
             _trailing_slash
+            _use_xsl_ns
             _verbose
             _real_mode
             _xslt_mode
@@ -114,7 +115,8 @@ sub _init
     my $stylesheet;
     my @in_stringparams;
     my $base_path;
-    my $make_like = 0;
+    my $make_like   = 0;
+    my $_use_xsl_ns = 0;
     my ( $help, $man );
     my $trailing_slash = 1;
 
@@ -128,6 +130,7 @@ sub _init
         "make"             => \$make_like,
         'help|h'           => \$help,
         'man'              => \$man,
+        'ns'               => \$_use_xsl_ns,
         'trailing-slash=i' => \$trailing_slash,
     );
 
@@ -165,6 +168,7 @@ sub _init
     $self->_make_like($make_like);
     $self->_base_path($base_path);
     $self->_trailing_slash($trailing_slash);
+    $self->_use_xsl_ns($_use_xsl_ns);
 
     my $mode = shift(@$argv);
 
@@ -345,7 +349,9 @@ sub _calc_default_xslt_stylesheet
     my $mode = $self->_xslt_mode();
 
     return
-"http://docbook.sourceforge.net/release/xsl/current/${mode}/docbook.xsl";
+        sprintf(
+        "http://docbook.sourceforge.net/release/%s/current/%s/docbook.xsl",
+        ( $self->_use_xsl_ns() ? "xsl-ns" : "xsl" ), $mode, );
 }
 
 sub _is_xhtml
